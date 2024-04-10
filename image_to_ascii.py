@@ -2,7 +2,7 @@ import os
 import sys
 import argparse
 
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 from typing import Optional, Union, Tuple
 
 char_ranges = {
@@ -33,13 +33,46 @@ def map_to_char_high(gray_scale: float) -> str:
 def calculate_scale(image_size: Tuple[int, int], scale: Optional[Union[int, float]] = None) -> int:
     if scale:
         return int(scale)
-    max_length = (1<<7)
+    max_length = 200
     max_size = max(image_size)
     scale: int = (max_size + max_length - 1) // max_length
     return scale
 
+def generate_image_text(text):
+    font = ImageFont.load_default()
+    font = font.font_variant(size=100)
+    text_box = font.getbbox(text)
+    text_width = abs(text_box[2] - text_box[0])
+    text_height = abs(text_box[1] - text_box[3])
 
-def asciiConvert(image_path: str, scale: Optional[Union[int, float]] = None):
+    image_size=(int(1.15*text_width), int(2*text_height*1.20))
+
+    image = Image.new("RGB", image_size, color="white")
+    draw = ImageDraw.Draw(image)
+    
+    x = (image_size[0] - text_width) / 2
+    y = (image_size[1] - 2*text_height) / 2
+    
+    draw.text((x, y), text, fill="black", font=font)
+    
+    image_name = f"assets/{text}.png"
+    image.save(image_name)
+    
+    return image_name
+
+def cut_grid(grid):
+    resized_grid = []
+    for line in grid:
+        if not all(column == " " for column in line):
+            resized_grid.append(line)
+    return resized_grid
+
+def ascii_convert(image_path: Optional[str], scale: Optional[Union[int, float]] = None, text: Optional[str] = None):
+    remove_temporary_image: bool = False
+    if text and (not image_path or not os.path.exists(image_path)):
+        image_path = generate_image_text(text)
+        remove_temporary_image = True
+
     image_name, image_extension = image_path.split(".")
 
     image = Image.open(image_path)
@@ -66,12 +99,16 @@ def asciiConvert(image_path: str, scale: Optional[Union[int, float]] = None):
             else:
                 grid[y][x] = map_to_char_low(sum(pix[x,y]))
 
+    resized_grid = cut_grid(grid)
+
     art = open(f"{image_name}.txt", "w+")
-    for row in grid:
+    for row in resized_grid:
         art.write(f"{''.join(row)}\n")
     art.close()
 
     os.remove(f"{resized_image_name}.{image_extension}")
+    if remove_temporary_image:
+        os.remove(image_path)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -79,9 +116,14 @@ if __name__ == '__main__':
         description = "Convert an image to text",
         epilog = ":)"
     )
-    parser.add_argument("filename", type=str, nargs=1, help="image filename/path")
+    parser.add_argument("-f", "--filename", type=str, nargs="?", help="image filename/path", default=argparse.SUPPRESS)
     parser.add_argument("-s", "--scale", nargs="?", type=int, help="scale to resize the image", default=argparse.SUPPRESS)
+    parser.add_argument("-t", "--text", nargs="?", type=str, help="text to image", default=argparse.SUPPRESS)
     args = parser.parse_args()
+    if "filename" not in args:
+        args.filename = None
     if "scale" not in args:
         args.scale = None
-    asciiConvert(args.filename[0], args.scale)
+    if "text" not in args:
+        args.text = None
+    ascii_convert(args.filename, args.scale, args.text)
