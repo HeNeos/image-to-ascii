@@ -67,7 +67,7 @@ def cut_grid(grid):
             resized_grid.append(line)
     return resized_grid
 
-def process_image(image, rescale=True, image_path: Optional[str]=None):
+def process_image(image, rescale=True, image_path: Optional[str]=None, scale=None):
     width, height = image.size
     if rescale:
         image_name, image_extension = image_path.split(".")
@@ -106,7 +106,7 @@ def ascii_convert(image_path: Optional[str], scale: Optional[Union[int, float]] 
 
     image_name, image_extension = image_path.split(".")
     image = Image.open(image_path)
-    grid = process_image(image, rescale=True, image_path=image_path)
+    grid = process_image(image, rescale=True, image_path=image_path, scale=scale)
 
     resized_grid = cut_grid(grid)
 
