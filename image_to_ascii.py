@@ -67,48 +67,58 @@ def cut_grid(grid):
             resized_grid.append(line)
     return resized_grid
 
-def ascii_convert(image_path: Optional[str], scale: Optional[Union[int, float]] = None, text: Optional[str] = None):
+def process_image(image, rescale=True, image_path: Optional[str]=None):
+    width, height = image.size
+    if rescale:
+        image_name, image_extension = image_path.split(".")
+        scale = calculate_scale((width, height), scale)
+        resized_width: int = width//scale
+        resized_height: int = height//scale
+        resized_image_name: str = f"{image_name}_resized"
+        image.resize((resized_width, resized_height)).save(f"{resized_image_name}.{image_extension}")
+        resized_image = Image.open(f"{resized_image_name}.{image_extension}")
+    else:
+        resized_image = image
+    resized_width, resized_height = resized_image.size
+
+    grid = [["X"] * 2*resized_width for i in range(resized_height)]
+
+    pix = resized_image.load()
+    for y in range(resized_height):
+        for x in range(resized_width):
+            current_char = ""
+            if max(resized_width, resized_height) > 300:
+                red, green, blue = pix[x,y][:3]
+                current_char = map_to_char_high(0.21*red + 0.72*green + 0.07*blue)
+            else:
+                current_char = map_to_char_low(sum(pix[x,y]))
+            grid[y][2*x] = current_char
+            grid[y][2*x+1] = current_char
+    if rescale:
+        os.remove(f"{resized_image_name}.{image_extension}")
+    return grid
+
+def ascii_convert(image_path: Optional[str], scale: Optional[Union[int, float]] = None, text: Optional[str] = None, save_image=True):
     remove_temporary_image: bool = False
     if text and (not image_path or not os.path.exists(image_path)):
         image_path = generate_image_text(text)
         remove_temporary_image = True
 
     image_name, image_extension = image_path.split(".")
-
     image = Image.open(image_path)
-    width, height = image.size
-    scale = calculate_scale((width, height), scale)
-
-    resized_width: int = width//scale
-    resized_height: int = height//scale
-    resized_image_name: str = f"{image_name}_resized"
-    image.resize((resized_width, resized_height)).save(f"{resized_image_name}.{image_extension}")
-
-    resized_image = Image.open(f"{resized_image_name}.{image_extension}")
-    resized_width, resized_height = resized_image.size
-
-
-    grid = [["X"] * resized_width for i in range(resized_height)]
-
-    pix = resized_image.load()
-    for y in range(resized_height):
-        for x in range(resized_width):
-            if max(resized_width, resized_height) > 160:
-                red, green, blue = pix[x,y][:3]
-                grid[y][x] = map_to_char_high(0.21*red + 0.72*green + 0.07*blue)
-            else:
-                grid[y][x] = map_to_char_low(sum(pix[x,y]))
+    grid = process_image(image, rescale=True, image_path=image_path)
 
     resized_grid = cut_grid(grid)
 
-    art = open(f"{image_name}.txt", "w+")
-    for row in resized_grid:
-        art.write(f"{''.join(row)}\n")
-    art.close()
-
-    os.remove(f"{resized_image_name}.{image_extension}")
     if remove_temporary_image:
         os.remove(image_path)
+
+    if save_image:
+        art = open(f"{image_name}.txt", "w+")
+        for row in resized_grid:
+            art.write(f"{''.join(row)}\n")
+        art.close()
+    return resized_grid
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
