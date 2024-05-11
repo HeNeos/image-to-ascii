@@ -1,7 +1,4 @@
 import os
-import sys
-import argparse
-
 from PIL import Image, ImageDraw, ImageFont
 from typing import Optional, Union, Tuple
 
@@ -99,7 +96,7 @@ def process_image(image, rescale=True, image_path: Optional[str] = None, scale=N
     for y in range(resized_height):
         for x in range(resized_width):
             current_char = ""
-            if max(resized_width, resized_height) > 300:
+            if max(resized_width, resized_height) > 230:
                 red, green, blue = pix[x, y][:3]
                 current_char = map_to_char_high(0.21 * red + 0.72 * green + 0.07 * blue)
             else:
@@ -114,22 +111,14 @@ def process_image(image, rescale=True, image_path: Optional[str] = None, scale=N
 def ascii_convert(
     image_path: Optional[str],
     scale: Optional[Union[int, float]] = None,
-    text: Optional[str] = None,
     save_image=True,
 ):
-    remove_temporary_image: bool = False
-    if text and (not image_path or not os.path.exists(image_path)):
-        image_path = generate_image_text(text)
-        remove_temporary_image = True
 
     image_name, image_extension = image_path.split(".")
     image = Image.open(image_path)
     grid = process_image(image, rescale=True, image_path=image_path, scale=scale)
 
     resized_grid = cut_grid(grid)
-
-    if remove_temporary_image:
-        os.remove(image_path)
 
     if save_image:
         art = open(f"{image_name}.txt", "w+")
@@ -139,39 +128,11 @@ def ascii_convert(
     return resized_grid
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        prog="ImageToAscii", description="Convert an image to text", epilog=":)"
-    )
-    parser.add_argument(
-        "-f",
-        "--filename",
-        type=str,
-        nargs="?",
-        help="image filename/path",
-        default=argparse.SUPPRESS,
-    )
-    parser.add_argument(
-        "-s",
-        "--scale",
-        nargs="?",
-        type=int,
-        help="scale to resize the image",
-        default=argparse.SUPPRESS,
-    )
-    parser.add_argument(
-        "-t",
-        "--text",
-        nargs="?",
-        type=str,
-        help="text to image",
-        default=argparse.SUPPRESS,
-    )
-    args = parser.parse_args()
-    if "filename" not in args:
-        args.filename = None
-    if "scale" not in args:
-        args.scale = None
-    if "text" not in args:
-        args.text = None
-    ascii_convert(args.filename, args.scale, args.text)
+def text_to_text(
+    text: Optional[str] = None,
+    scale: Optional[Union[int, float]] = None,
+    save_image=True,
+):
+    image_path = generate_image_text(text)
+    ascii_convert(image_path, scale, save_image)
+    os.remove(image_path)
