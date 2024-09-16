@@ -2,33 +2,12 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 from typing import Optional, Union, Tuple
 
-char_ranges = {
-    1: "#",
-    100: "X",
-    200: "%",
-    300: "&",
-    400: "*",
-    500: "+",
-    600: "/",
-    700: "(",
-    750: "'",
-}
-
-ascii_chars = (
-    '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,"^`\\' + "'. "
-)
-
-
-def map_to_char_low(pixel_sum: int) -> str:
-    keys = sorted(list(char_ranges.keys()))
-    for key in keys:
-        if pixel_sum < key:
-            return char_ranges[key]
-    return " "
+ascii_chars = " `.',-~:;=+*#%@M"  # black background
+# ascii_chars = "M@%#*+=;:~-,'.` " # white background
 
 
 def map_to_char_high(gray_scale: float) -> str:
-    position: int = int(((len(ascii_chars) - 1) * gray_scale + (255 - 1)) // 255)
+    position: int = int(((len(ascii_chars) - 1) * gray_scale) / 255)
     return ascii_chars[position]
 
 
@@ -39,8 +18,8 @@ def calculate_scale(
         return int(scale)
     max_length = 200
     max_size = max(image_size)
-    scale: int = (max_size + max_length - 1) // max_length
-    return scale
+    new_scale: int = (max_size + max_length - 1) // max_length
+    return new_scale
 
 
 def generate_image_text(text):
@@ -79,30 +58,26 @@ def process_image(image, rescale=True, image_path: Optional[str] = None, scale=N
     if rescale:
         image_name, image_extension = image_path.split(".")
         scale = calculate_scale((width, height), scale)
-        resized_width: int = width // scale
+        resized_width: int = width // scale * 2
         resized_height: int = height // scale
         resized_image_name: str = f"{image_name}_resized"
         image.resize((resized_width, resized_height)).save(
             f"{resized_image_name}.{image_extension}"
         )
-        resized_image = Image.open(f"{resized_image_name}.{image_extension}")
+        resized_image = Image.open(f"{resized_image_name}.{image_extension}").convert(
+            "LA"
+        )
     else:
-        resized_image = image
+        resized_image = image.convert("LA")
     resized_width, resized_height = resized_image.size
 
-    grid = [["X"] * 2 * resized_width for i in range(resized_height)]
+    grid = [["X"] * resized_width for i in range(resized_height)]
 
     pix = resized_image.load()
     for y in range(resized_height):
         for x in range(resized_width):
-            current_char = ""
-            if max(resized_width, resized_height) > 230:
-                red, green, blue = pix[x, y][:3]
-                current_char = map_to_char_high(0.21 * red + 0.72 * green + 0.07 * blue)
-            else:
-                current_char = map_to_char_low(sum(pix[x, y]))
-            grid[y][2 * x] = current_char
-            grid[y][2 * x + 1] = current_char
+            current_char = map_to_char_high(pix[x, y][0])
+            grid[y][x] = current_char
     if rescale:
         os.remove(f"{resized_image_name}.{image_extension}")
     return grid
