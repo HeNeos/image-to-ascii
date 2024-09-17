@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 from typing import Optional, Union, Tuple
 
 ascii_chars = " `.',-~:;=+*#%@M"  # black background
-# ascii_chars = "M@%#*+=;:~-,'.` " # white background
+# ascii_chars = "M@%#*+=;:~-,'.` "  # white background
 
 
 def map_to_char_high(gray_scale: float) -> str:

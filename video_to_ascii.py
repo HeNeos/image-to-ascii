@@ -9,7 +9,7 @@ from PIL import Image
 
 def resize_frame(frame, scale):
     height, width, _ = frame.shape
-    return cv2.resize(frame, (int(height / scale), int(width / scale)))
+    return cv2.resize(frame, (2 * int(width / scale), int(height / scale)))
 
 
 def video_convert(video: Union[str, int], scale: Union[float, int]):
@@ -31,7 +31,7 @@ def video_convert(video: Union[str, int], scale: Union[float, int]):
             if time_per_frame is None:
                 time_per_frame = timeit.timeit() - start
                 to_sleep = (1 - 47 * time_per_frame) / 47
-            if to_sleep > 0.05:
+            if to_sleep > 0.1:
                 time.sleep(to_sleep)
         else:
             break
