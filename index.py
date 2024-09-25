@@ -1,9 +1,16 @@
 import argparse
+from typing import cast
 
-from image_to_ascii import ascii_convert, text_to_text
-from video_to_ascii import video_convert
+from modules.image_to_ascii import ascii_convert, SaveFormats
+from modules.video_to_ascii import video_image_convert
+from modules.text_to_text import text_to_text
 
 valid_formats = ["image", "text", "video"]
+save_formats = {
+    "show": SaveFormats.Show,
+    "text": SaveFormats.Text,
+    "image": SaveFormats.Image,
+}
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -21,7 +28,7 @@ if __name__ == "__main__":
         "--format",
         nargs="?",
         type=str,
-        help="inpurt format",
+        help="input format",
         default=argparse.SUPPRESS,
     )
     parser.add_argument(
@@ -40,12 +47,21 @@ if __name__ == "__main__":
         help="text to image",
         default=argparse.SUPPRESS,
     )
-    args = parser.parse_args()
+    parser.add_argument("--save", nargs="?", type=str, default=argparse.SUPPRESS)
+    args: argparse.Namespace = parser.parse_args()
 
     if "format" not in args:
         args.format = ""
     if args.format not in valid_formats:
         print(f"{args.format} is not a valid format: {','.join(valid_formats)}")
+        raise Exception
+
+    if "save" not in args:
+        args.save = "show"
+    if args.save not in save_formats.keys():
+        print(
+            f"{args.save} is not a valid save format: {','.join(save_formats.keys())}"
+        )
         raise Exception
 
     if args.format == "text":
@@ -58,7 +74,7 @@ if __name__ == "__main__":
         if "filename" not in args:
             print("Missing filename")
             raise Exception
-    elif args.__format__ == "video":
+    elif args.format == "video":
         if "filename" not in args:
             args.filename = 0
 
@@ -66,8 +82,14 @@ if __name__ == "__main__":
         args.scale = 10
 
     if args.format == "video":
-        video_convert(video=args.filename, scale=args.scale)
+        video_image_convert(video=cast(str, args.filename), scale=args.scale)
     elif args.format == "text":
-        text_to_text(text=args.text, scale=args.scale, save_image=True)
+        text_to_text(
+            text=args.text, scale=args.scale, save_image=save_formats[args.save]
+        )
     elif args.format == "image":
-        ascii_convert(image_path=args.filename, scale=args.scale, save_image=True)
+        ascii_convert(
+            image_path=cast(str, args.filename),
+            scale=args.scale,
+            save_format=save_formats[args.save],
+        )
