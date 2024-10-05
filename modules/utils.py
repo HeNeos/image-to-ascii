@@ -1,14 +1,10 @@
 from typing import Optional, Tuple, Union, List
+from modules.ascii_dict import AsciiDict
 
-# ascii_chars: str = " `.',-~:;=+*#%@M"  # black background
-# ascii_chars = "M@%#*+=;:~-,'.` "  # white background
 
-ascii_chars: str = " `.',-_:;~\"!^=+*/o#%se&8B$MW&@"  # black background
-# ascii_chars: str = " .`'-,^\":;~!_+=<>()|/\\1[]{}?i!lIftjrxnvczusSLoXYZOE9VwkmFAB8W#@$&%M"
-
-def map_to_char_high(gray_scale: float) -> str:
-    position: int = int(((len(ascii_chars) - 1) * gray_scale) / 255)
-    return ascii_chars[position]
+def map_to_char(gray_scale: float, ascii_dict: AsciiDict) -> str:
+    position: int = int(((len(ascii_dict.value) - 1) * gray_scale) / 255)
+    return ascii_dict.value[position]
 
 
 def calculate_scale(

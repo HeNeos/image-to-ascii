@@ -1,1 +1,5 @@
+**/__pycache__
 .image_to_ascii
+assets
+**/*.mp4
+**/*.webm

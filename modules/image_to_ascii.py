@@ -1,7 +1,8 @@
 import os
 from PIL import Image
 from typing import Tuple, Optional
-from modules.utils import calculate_scale, map_to_char_high
+from modules.ascii_dict import AsciiDict
+from modules.utils import calculate_scale, map_to_char
 from modules.save import SaveFormats, save_ascii
 from modules.font import Font
 from modules.types import Scale, AsciiImage, AsciiColors
@@ -31,13 +32,19 @@ def process_image(
     gray_image: Image.Image = image.convert("LA")
     width, height = gray_image.size
 
+    ascii_dict = (
+        AsciiDict.HighAsciiDict
+        if width * height >= 150 * 150
+        else AsciiDict.LowAsciiDict
+    )
+
     grid: AsciiImage = [["X"] * width for _ in range(height)]
     image_colors: AsciiColors = [[(255, 255, 255)] * width for _ in range(height)]
 
     gray_pixels = gray_image.load()
     for y in range(height):
         for x in range(width):
-            current_char: str = map_to_char_high(gray_pixels[x, y][0])
+            current_char: str = map_to_char(gray_pixels[x, y][0], ascii_dict)
             grid[y][x] = current_char
             image_colors[y][x] = pix[x, y]
     if rescale:
