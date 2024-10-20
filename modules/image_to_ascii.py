@@ -1,80 +1,46 @@
-import os
+import numpy as np
 from PIL import Image
-from typing import Tuple, Optional
+from cairo import ImageSurface
 from modules.ascii_dict import AsciiDict
-from modules.utils import calculate_scale, map_to_char
-from modules.save import SaveFormats, save_ascii
-from modules.font import Font
-from modules.types import Scale, AsciiImage, AsciiColors
+from modules.utils.utils import (
+    create_char_array,
+    map_to_char_vectorized,
+    create_ascii_image,
+    rescale_image,
+)
+from modules.utils.save import SaveFormats
+from modules.utils.custom_types import AsciiImage, AsciiColors
 
 
-def rescale_image(
-    image: Image.Image, image_path: str, rescale: Scale
-) -> Tuple[Image.Image, str]:
-    width, height = image.size
-    image_name, image_extension = image_path.split(".")
-    rescale: int = calculate_scale((width, height), rescale)
-    resized_width: int = int(width * (Font.Height.value / Font.Width.value) // rescale)
-    resized_height: int = height // rescale
-    resized_image_name: str = f"{image_name}_resized.{image_extension}"
-    image.resize((resized_width, resized_height)).save(resized_image_name)
-    resized_image: Image.Image = Image.open(resized_image_name)
-    return resized_image, resized_image_name
+def process_image(image: Image.Image) -> tuple[AsciiImage, AsciiColors]:
+    img_array = np.array(image)
+    height, width, _ = img_array.shape
 
-
-def process_image(
-    image: Image.Image, image_path: str = "", rescale: Optional[Scale] = None
-) -> Tuple[AsciiImage, AsciiColors]:
-    if rescale:
-        image, resized_image_name = rescale_image(image, image_path, rescale)
-    pix = image.load()
-
-    gray_image: Image.Image = image.convert("LA")
-    width, height = gray_image.size
+    gray_array = np.dot(img_array[..., :3], [0.2989, 0.5870, 0.1140])
 
     ascii_dict = (
         AsciiDict.HighAsciiDict
-        if width * height >= 150 * 150
+        if width * height >= 180 * 180
         else AsciiDict.LowAsciiDict
     )
+    char_array = create_char_array(ascii_dict)
 
-    grid: AsciiImage = [["X"] * width for _ in range(height)]
-    image_colors: AsciiColors = [[(255, 255, 255)] * width for _ in range(height)]
+    ascii_chars = map_to_char_vectorized(gray_array, char_array)
 
-    gray_pixels = gray_image.load()
-    for y in range(height):
-        for x in range(width):
-            current_char: str = map_to_char(gray_pixels[x, y][0], ascii_dict)
-            grid[y][x] = current_char
-            image_colors[y][x] = pix[x, y]
-    if rescale:
-        os.remove(resized_image_name)
+    grid: AsciiImage = ascii_chars.tolist()
+    image_colors: AsciiColors = [row.tolist() for row in img_array]
 
     return grid, image_colors
 
 
-def ascii_convert(
-    image_path: str,
-    scale: Optional[Scale] = None,
-    save_format: SaveFormats = SaveFormats.Show,
-) -> AsciiImage:
+def ascii_convert(image: Image.Image) -> ImageSurface:
+    grid, image_colors = process_image(image=image)
+    return create_ascii_image(grid, image_colors)
 
-    image_name, image_extension = image_path.split(".")
+
+def run(image_path: str, scale: int, save_format: SaveFormats):
     image: Image.Image = Image.open(image_path).convert("RGB")
-    grid, image_colors = process_image(
-        image=image, image_path=image_path, rescale=scale
-    )
-
-    # resized_grid: List[List[str]] = cut_grid(grid)
-
-    if save_format is SaveFormats.Show:
-        for row in grid:
-            print("".join(row))
-    else:
-        save_ascii(
-            ascii_art=grid,
-            save_format=save_format,
-            image_name=image_name,
-            image_colors=image_colors,
-        )
-    return grid
+    rescaled_image: Image.Image = rescale_image(image, scale)
+    ascii_image: ImageSurface = ascii_convert(rescaled_image)
+    ascii_image.write_to_png(f"{image_path}_ascii.png")
+    # ascii_image.save(f"{image_path}_ascii.png")

@@ -1,7 +1,7 @@
 import argparse
 from typing import cast
 
-from modules.image_to_ascii import ascii_convert, SaveFormats
+from modules.image_to_ascii import run, SaveFormats
 from modules.video_to_ascii import video_image_convert
 from modules.text_to_text import text_to_text
 
@@ -88,7 +88,7 @@ if __name__ == "__main__":
             text=args.text, scale=args.scale, save_image=save_formats[args.save]
         )
     elif args.format == "image":
-        ascii_convert(
+        run(
             image_path=cast(str, args.filename),
             scale=args.scale,
             save_format=save_formats[args.save],

@@ -3,8 +3,8 @@ import os
 from typing import Optional
 from PIL import Image, ImageDraw, ImageFont
 from modules.image_to_ascii import ascii_convert
-from modules.save import SaveFormats
-from modules.types import Scale
+from modules.utils.save import SaveFormats
+from modules.utils.custom_types import Scale
 
 
 def generate_image_text(text: str) -> str:
