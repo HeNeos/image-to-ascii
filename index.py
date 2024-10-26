@@ -2,8 +2,8 @@ import argparse
 from typing import cast
 
 from modules.image_to_ascii import run
-from modules.video_to_ascii import video_image_convert
 from modules.text_to_text import text_to_text
+from modules.video_to_ascii import video_image_convert
 
 valid_formats = ["image", "text", "video"]
 

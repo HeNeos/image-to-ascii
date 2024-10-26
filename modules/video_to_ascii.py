@@ -1,20 +1,16 @@
-from cairo import ImageSurface
-from cv2 import VideoCapture, cvtColor, COLOR_BGR2RGB
-from cv2.typing import MatLike
-from modules.image_to_ascii import ascii_convert
-from PIL import Image
 from multiprocessing import Pool, cpu_count
 
+from cairo import ImageSurface
+from cv2 import COLOR_BGR2RGB, VideoCapture, cvtColor
+from cv2.typing import MatLike
+from PIL import Image
+
+from modules.image_to_ascii import ascii_convert
+from modules.utils.custom_types import FrameData, Frames
+from modules.utils.ffmpeg import (add_audio_to_video, extract_audio,
+                                  get_video_framerate, get_video_resolution,
+                                  merge_frames, resize_video)
 from modules.utils.font import Font
-from modules.utils.custom_types import Frames, FrameData
-from modules.utils.ffmpeg import (
-    add_audio_to_video,
-    get_video_framerate,
-    get_video_resolution,
-    resize_video,
-    extract_audio,
-    merge_frames,
-)
 
 batch_size: int = 50
 

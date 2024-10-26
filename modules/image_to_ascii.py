@@ -1,16 +1,13 @@
 import numpy as np
 import numpy.typing as npt
-from PIL import Image
 from cairo import ImageSurface
+from PIL import Image
+
 from modules.ascii_dict import AsciiDict
-from modules.utils.utils import (
-    create_char_array,
-    map_to_char_vectorized,
-    create_ascii_image,
-    rescale_image,
-)
+from modules.utils.custom_types import AsciiColors, AsciiImage
 from modules.utils.font import Font
-from modules.utils.custom_types import AsciiImage, AsciiColors
+from modules.utils.utils import (create_ascii_image, create_char_array,
+                                 map_to_char_vectorized, rescale_image)
 
 
 def process_image(image: Image.Image) -> tuple[AsciiImage, AsciiColors]:
