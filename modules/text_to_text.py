@@ -1,40 +1,34 @@
 import os
 
-from typing import Optional
 from PIL import Image, ImageDraw, ImageFont
-from modules.image_to_ascii import ascii_convert
-from modules.utils.save import SaveFormats
-from modules.utils.custom_types import Scale
+from modules.image_to_ascii import run
+from modules.utils.font import Font
 
 
 def generate_image_text(text: str) -> str:
-    font = ImageFont.load_default()
-    font = font.font_variant(size=100)
+    font: ImageFont = ImageFont.truetype(Font.Name.value, 256)
     text_box = font.getbbox(text)
-    text_width = abs(text_box[2] - text_box[0])
-    text_height = abs(text_box[1] - text_box[3])
+    text_width: int = abs(text_box[2] - text_box[0])
+    text_height: int = abs(text_box[1] - text_box[3])
+    image_size: tuple[int, int] = (int(1.15 * text_width), int( 2 * text_height ))
 
-    image_size = (int(1.15 * text_width), int(2 * text_height * 1.20))
+    image: Image.Image = Image.new("RGB", image_size, color="black")
+    draw: ImageDraw = ImageDraw.Draw(image)
 
-    image: Image.Image = Image.new("RGB", image_size, color="white")
-    draw = ImageDraw.Draw(image)
+    x: int = (image_size[0] - text_width) // 2
+    y: int = (image_size[1] - 1.2 * text_height) // 2
+    draw.text((x, y), text, fill="white", font=font)
 
-    x = (image_size[0] - text_width) / 2
-    y = (image_size[1] - 2 * text_height) / 2
-
-    draw.text((x, y), text, fill="black", font=font)
-
-    image_name = f"assets/{text}.png"
+    image_name: str = f"assets/{text}.png"
     image.save(image_name)
 
     return image_name
 
 
 def text_to_text(
-    text: Optional[str] = None,
-    scale: Optional[Scale] = None,
-    save_image=SaveFormats.Show,
-):
+    text: str,
+    height: int,
+) -> None:
     image_path = generate_image_text(text)
-    ascii_convert(image_path, scale, save_image)
+    run(image_path, height)
     os.remove(image_path)

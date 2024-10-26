@@ -1,16 +1,17 @@
 import argparse
 from typing import cast
 
-from modules.image_to_ascii import run, SaveFormats
+from modules.image_to_ascii import run
 from modules.video_to_ascii import video_image_convert
 from modules.text_to_text import text_to_text
 
 valid_formats = ["image", "text", "video"]
-save_formats = {
-    "show": SaveFormats.Show,
-    "text": SaveFormats.Text,
-    "image": SaveFormats.Image,
-}
+
+# save_formats = {
+#     "show": SaveFormats.Show,
+#     "text": SaveFormats.Text,
+#     "image": SaveFormats.Image,
+# }
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -33,10 +34,10 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "-s",
-        "--scale",
+        "--height",
         nargs="?",
         type=int,
-        help="scale to resize",
+        help="height to resize",
         default=argparse.SUPPRESS,
     )
     parser.add_argument(
@@ -47,7 +48,7 @@ if __name__ == "__main__":
         help="text to image",
         default=argparse.SUPPRESS,
     )
-    parser.add_argument("--save", nargs="?", type=str, default=argparse.SUPPRESS)
+    # parser.add_argument("--save", nargs="?", type=str, default=argparse.SUPPRESS)
     args: argparse.Namespace = parser.parse_args()
 
     if "format" not in args:
@@ -56,13 +57,13 @@ if __name__ == "__main__":
         print(f"{args.format} is not a valid format: {','.join(valid_formats)}")
         raise Exception
 
-    if "save" not in args:
-        args.save = "show"
-    if args.save not in save_formats.keys():
-        print(
-            f"{args.save} is not a valid save format: {','.join(save_formats.keys())}"
-        )
-        raise Exception
+    # if "save" not in args:
+    #     args.save = "show"
+    # if args.save not in save_formats.keys():
+    #     print(
+    #         f"{args.save} is not a valid save format: {','.join(save_formats.keys())}"
+    #     )
+    #     raise Exception
 
     if args.format == "text":
         if "text" not in args:
@@ -78,18 +79,18 @@ if __name__ == "__main__":
         if "filename" not in args:
             args.filename = 0
 
-    if "scale" not in args:
-        args.scale = 10
+    if "height" not in args:
+        args.height = 10
 
     if args.format == "video":
-        video_image_convert(video=cast(str, args.filename), scale=args.scale)
+        video_image_convert(video=cast(str, args.filename), height=args.height)
     elif args.format == "text":
         text_to_text(
-            text=args.text, scale=args.scale, save_image=save_formats[args.save]
+            text=args.text,
+            height=args.height,
         )
     elif args.format == "image":
         run(
             image_path=cast(str, args.filename),
-            scale=args.scale,
-            save_format=save_formats[args.save],
+            height=args.height,
         )

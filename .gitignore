@@ -1,5 +1,7 @@
 **/__pycache__
-.image_to_ascii
+.venv
 assets
+**/*.png
+**/*.jpeg
 **/*.mp4
 **/*.webm

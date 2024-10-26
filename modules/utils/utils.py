@@ -1,22 +1,29 @@
 import cairo
 import numpy as np
+import numpy.typing as npt
 import ctypes as ct
 
-from typing import List
+from typing import List, no_type_check
 from modules.ascii_dict import AsciiDict
 from modules.utils.font import Font
 from modules.utils.custom_types import AsciiColors, AsciiImage
 from PIL import Image
 
-_initialized = False
+_initialized: bool = False
+face: cairo.FontFace | None = None
 
 
-def create_char_array(ascii_dict: AsciiDict) -> np.ndarray:
+def create_char_array(ascii_dict: AsciiDict) -> npt.NDArray[np.str_]:
     return np.array(list(ascii_dict.value))
 
 
-def map_to_char_vectorized(values: np.ndarray, char_array: np.ndarray) -> np.ndarray:
-    return char_array[np.digitize(values, np.linspace(0, 256, len(char_array) + 1)) - 1]
+def map_to_char_vectorized(
+    values: npt.NDArray[np.float64], char_array: npt.NDArray[np.str_]
+) -> npt.NDArray[np.str_]:
+    positions: npt.NDArray[np.int32] = (
+        np.digitize(values, np.linspace(0, 256, len(char_array) + 1)) - 1
+    )
+    return char_array[positions]
 
 
 def map_to_char(gray_scale: float, ascii_dict: AsciiDict) -> str:
@@ -24,7 +31,12 @@ def map_to_char(gray_scale: float, ascii_dict: AsciiDict) -> str:
     return ascii_dict.value[position]
 
 
-def create_cairo_font_face_for_file(filename, faceindex=0, loadoptions=0):
+# https://www.cairographics.org/cookbook/freetypepython/
+@no_type_check
+# mypy: disable-error-code=name-defined
+def create_cairo_font_face_for_file(
+    filename, faceindex=0, loadoptions=0
+) -> cairo.FontFace:
     global _initialized
     global _freetype_so
     global _cairo_so
@@ -119,6 +131,7 @@ def create_cairo_font_face_for_file(filename, faceindex=0, loadoptions=0):
 def create_ascii_image(
     ascii_art: AsciiImage, image_colors: AsciiColors
 ) -> cairo.ImageSurface:
+    global face
     rows = len(ascii_art)
     columns = len(ascii_art[0])
 
@@ -128,7 +141,8 @@ def create_ascii_image(
     surface = cairo.ImageSurface(cairo.FORMAT_RGB24, surface_width, surface_height)
     context = cairo.Context(surface)
 
-    face = create_cairo_font_face_for_file("consolas.ttf", 0)
+    if face is None:
+        face = create_cairo_font_face_for_file(Font.Name.value, 0)
     context.set_font_face(face)
     context.set_font_size(12)
 
@@ -148,9 +162,9 @@ def create_ascii_image(
     return surface
 
 
-def rescale_image(image: Image.Image, scale: int) -> Image.Image:
+def rescale_image(image: Image.Image, new_height: int) -> Image.Image:
     width, height = image.size
-    resized_height: int = scale // Font.Height.value
+    resized_height: int = new_height // Font.Height.value
     scale: float = resized_height / height
     resized_width: int = int(width * (Font.Height.value / Font.Width.value) * scale)
     resized_image = image.resize((resized_width, resized_height))
