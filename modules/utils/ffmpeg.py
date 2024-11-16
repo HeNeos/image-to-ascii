@@ -22,6 +22,25 @@ def get_video_framerate(video_path: str) -> float:
     return frame_rate
 
 
+def get_total_frames(video_path: str) -> int:
+    ffprobe_command = [
+        "ffprobe",
+        "-v",
+        "error",
+        "-select_streams",
+        "v:0",
+        "-count_packets",
+        "-show_entries",
+        "stream=nb_read_packets",
+        "-of",
+        "csv=p=0",
+        f"{video_path}",
+    ]
+    ffprobe_result = subprocess.run(ffprobe_command, capture_output=True, text=True)
+    frames: int = int(ffprobe_result.stdout.strip())
+    return frames
+
+
 def get_video_resolution(video_path: str) -> tuple[int, int]:
     ffprobe_command = [
         "ffprobe",
@@ -41,6 +60,8 @@ def get_video_resolution(video_path: str) -> tuple[int, int]:
 def resize_video(video_path: str, width: int, height: int, output_path: str) -> None:
     ffmpeg_command = [
         "ffmpeg",
+        "-loglevel",
+        "error",
         "-y",
         "-i",
         video_path,
@@ -56,13 +77,26 @@ def resize_video(video_path: str, width: int, height: int, output_path: str) -> 
 
 
 def extract_audio(video_path: str, output_path: str) -> None:
-    command = ["ffmpeg", "-y", "-i", video_path, "-vn", "-acodec", "mp3", output_path]
+    command = [
+        "ffmpeg",
+        "-loglevel",
+        "error",
+        "-y",
+        "-i",
+        video_path,
+        "-vn",
+        "-acodec",
+        "mp3",
+        output_path,
+    ]
     subprocess.run(command, check=True)
 
 
 def add_audio_to_video(video_path: str, audio_path: str, output_path: str) -> None:
     command = [
         "ffmpeg",
+        "-loglevel",
+        "error",
         "-y",
         "-i",
         video_path,
@@ -88,6 +122,8 @@ def merge_videos(video_files: list[str], output_path: str) -> None:
 
     command = [
         "ffmpeg",
+        "-loglevel",
+        "error",
         "-y",
         "-f",
         "concat",
@@ -123,6 +159,8 @@ def merge_frames(
 
     command = [
         "ffmpeg",
+        "-loglevel",
+        "error",
         "-y",
         "-r",
         str(frame_rate),

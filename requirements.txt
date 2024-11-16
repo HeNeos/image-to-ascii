@@ -14,3 +14,4 @@ pytubefix==8.1.1
 setuptools==59.6.0
 six==1.16.0
 types-Pillow==10.2.0.20240822
+progressbar2==4.5.0
