@@ -2,21 +2,69 @@ import os
 import shutil
 from multiprocessing import Pool, cpu_count
 
+import numpy as np
+import numpy.typing as npt
 import progressbar
 from cairo import ImageSurface
 from cv2 import COLOR_BGR2RGB, VideoCapture, cvtColor
 from cv2.typing import MatLike
 from PIL import Image
 
+from modules.ascii_dict import AsciiDict
+from modules.dithering import DitheringStrategy
+from modules.dithering.atkinson import DitheringAtkinson
 from modules.image_to_ascii import ascii_convert
 from modules.utils.custom_types import FrameData, Frames
-from modules.utils.ffmpeg import (add_audio_to_video, extract_audio,
-                                  get_total_frames, get_video_framerate,
-                                  get_video_resolution, merge_frames,
-                                  resize_video)
+from modules.utils.ffmpeg import (
+    add_audio_to_video,
+    extract_audio,
+    get_total_frames,
+    get_video_framerate,
+    get_video_resolution,
+    merge_frames,
+    resize_video,
+)
 from modules.utils.font import Font
+from modules.utils.utils import create_char_array
 
 batch_size: int = 100
+
+
+class ProcessingParameters:
+    _instance = None
+
+    def __init__(self, *_):
+        pass
+
+    def __new__(cls, width: int = 0, height: int = 0):
+        if not cls._instance:
+            cls._instance = super(ProcessingParameters, cls).__new__(cls)
+            ascii_dict = (
+                AsciiDict.HighAsciiDict
+                if width * height
+                >= (1920 // Font.Width.value) * (1080 // Font.Height.value)
+                else AsciiDict.LowAsciiDict
+            )
+            cls._instance.char_array = create_char_array(ascii_dict)
+            cls._instance.dithering_strategy = DitheringAtkinson
+
+        return cls._instance
+
+    @property
+    def char_array(self) -> npt.NDArray[np.str_]:
+        return self._char_array
+
+    @property
+    def dithering_strategy(self) -> DitheringStrategy:
+        return self._dithering_strategy
+
+    @char_array.setter
+    def char_array(self, char_array: npt.NDArray[np.str_]):
+        self._char_array = char_array
+
+    @dithering_strategy.setter
+    def dithering_strategy(self, dithering_strategy: DitheringStrategy):
+        self._dithering_strategy = dithering_strategy
 
 
 def extract_frame(video_capture: VideoCapture) -> tuple[bool, MatLike]:
@@ -50,7 +98,11 @@ def process_frame(frame_data: FrameData) -> None:
     frame: Image.Image = frame_data.frame
     frame_id: int = frame_data.frame_id
     video_name: str = frame_data.video_name
-    ascii_image: ImageSurface = ascii_convert(frame)
+    ascii_image: ImageSurface = ascii_convert(
+        frame,
+        ProcessingParameters().char_array,
+        ProcessingParameters().dithering_strategy,
+    )
     ascii_image.write_to_png(f"./{video_name}/{frame_id:04d}.png")
 
 
@@ -103,6 +155,8 @@ def video_image_convert(video: str, height: int) -> None:
 
     downsize_video_path: str = f"{video_name}-downsize.mp4"
     resize_video(video, new_width, new_height, downsize_video_path)
+
+    ProcessingParameters(new_width, new_height)
 
     video_framerate: float = get_video_framerate(downsize_video_path)
     video_frames: int = get_total_frames(downsize_video_path)
