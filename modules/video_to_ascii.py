@@ -9,6 +9,7 @@ from cairo import ImageSurface
 from cv2 import COLOR_BGR2RGB, VideoCapture, cvtColor
 from cv2.typing import MatLike
 from PIL import Image
+from typing import Any, Type
 
 from modules.ascii_dict import AsciiDict
 from modules.dithering import DitheringStrategy
@@ -33,10 +34,10 @@ batch_size: int = 100
 class ProcessingParameters:
     _instance = None
 
-    def __init__(self, *_):
+    def __init__(self, *_: Any) -> None:
         pass
 
-    def __new__(cls, width: int = 0, height: int = 0):
+    def __new__(cls, width: int = 0, height: int = 0) -> "ProcessingParameters":
         if not cls._instance:
             cls._instance = super(ProcessingParameters, cls).__new__(cls)
             ascii_dict = (
@@ -45,8 +46,8 @@ class ProcessingParameters:
                 >= (1920 // Font.Width.value) * (1080 // Font.Height.value)
                 else AsciiDict.LowAsciiDict
             )
-            cls._instance.char_array = create_char_array(ascii_dict)
-            cls._instance.dithering_strategy = DitheringAtkinson
+            cls._instance._char_array = create_char_array(ascii_dict)
+            cls._instance._dithering_strategy = DitheringAtkinson
 
         return cls._instance
 
@@ -54,16 +55,16 @@ class ProcessingParameters:
     def char_array(self) -> npt.NDArray[np.str_]:
         return self._char_array
 
-    @property
-    def dithering_strategy(self) -> DitheringStrategy:
-        return self._dithering_strategy
-
     @char_array.setter
-    def char_array(self, char_array: npt.NDArray[np.str_]):
+    def char_array(self, char_array: npt.NDArray[np.str_]) -> None:
         self._char_array = char_array
 
+    @property
+    def dithering_strategy(self) -> Type[DitheringStrategy]:
+        return self._dithering_strategy
+
     @dithering_strategy.setter
-    def dithering_strategy(self, dithering_strategy: DitheringStrategy):
+    def dithering_strategy(self, dithering_strategy: Type[DitheringStrategy]) -> None:
         self._dithering_strategy = dithering_strategy
 
 

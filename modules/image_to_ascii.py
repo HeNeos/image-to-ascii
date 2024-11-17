@@ -1,3 +1,4 @@
+from typing import Type
 import numpy as np
 import numpy.typing as npt
 from cairo import ImageSurface
@@ -19,12 +20,12 @@ from modules.dithering import DitheringStrategy
 def process_image(
     image: Image.Image,
     char_array: npt.NDArray[np.str_],
-    dithering_strategy: DitheringStrategy | None = None,
+    dithering_strategy: Type[DitheringStrategy] | None = None,
 ) -> tuple[AsciiImage, AsciiColors]:
     img_array: npt.NDArray[np.uint8] = np.array(image, dtype=np.uint8)
 
     # custom grayscale
-    gray_array: npt.NDArray[np.float64] = np.clip(
+    gray_array: npt.NDArray[np.float32] = np.clip(
         np.dot(img_array[..., :3], [0.3890, 0.5870, 0.2540]), 0.0, 255.0
     )
 
@@ -42,7 +43,7 @@ def process_image(
 def ascii_convert(
     image: Image.Image,
     char_array: npt.NDArray[np.str_],
-    dithering_strategy: DitheringStrategy | None = None,
+    dithering_strategy: Type[DitheringStrategy] | None = None,
 ) -> ImageSurface:
     grid, image_colors = process_image(image, char_array, dithering_strategy)
     return create_ascii_image(grid, image_colors)
@@ -61,7 +62,7 @@ def run(image_path: str, height: int) -> None:
         else AsciiDict.LowAsciiDict
     )
     char_array: npt.NDArray[np.str_] = create_char_array(ascii_dict)
-    dithering_strategy: DitheringStrategy = DitheringAtkinson
+    dithering_strategy: Type[DitheringStrategy] = DitheringAtkinson
 
     ascii_image: ImageSurface = ascii_convert(
         rescaled_image, char_array, dithering_strategy

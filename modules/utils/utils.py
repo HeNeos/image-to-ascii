@@ -18,7 +18,7 @@ def create_char_array(ascii_dict: AsciiDict) -> npt.NDArray[np.str_]:
 
 
 def map_to_char_vectorized(
-    values: npt.NDArray[np.float64], char_array: npt.NDArray[np.str_]
+    values: npt.NDArray[np.float32], char_array: npt.NDArray[np.str_]
 ) -> npt.NDArray[np.str_]:
     positions: npt.NDArray[np.int32] = (
         np.digitize(values, np.linspace(0, 256, len(char_array) + 1)) - 1
