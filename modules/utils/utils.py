@@ -1,13 +1,18 @@
+import ctypes as ct
+from typing import List, no_type_check
+
 import cairo
 import numpy as np
 import numpy.typing as npt
-import ctypes as ct
-
-from typing import List, no_type_check
-from modules.ascii_dict import AsciiDict
-from modules.utils.font import Font
-from modules.utils.custom_types import AsciiColors, AsciiImage
+from numba import jit
 from PIL import Image
+
+from modules.ascii_dict import AsciiDict
+from modules.canvas_context.cairo_context import (CairoContext,
+                                                  CairoContextFactory)
+from modules.save.formats import DisplayFormats
+from modules.utils.custom_types import AsciiColors, AsciiImage
+from modules.utils.font import Font
 
 _initialized: bool = False
 face: cairo.FontFace | None = None
@@ -17,12 +22,26 @@ def create_char_array(ascii_dict: AsciiDict) -> npt.NDArray[np.str_]:
     return np.array(list(ascii_dict.value))
 
 
+@jit(
+    "int32[:, :](float64[:, :], int64)",
+    nopython=True,
+    nogil=True,
+    fastmath=True,
+    cache=True,
+)
+def _map_values_to_positions(
+    values: npt.NDArray[np.float64], array_length: int
+) -> npt.NDArray[np.int32]:
+
+    scale: float = float(array_length - 1) / 255.0
+    positions: npt.NDArray[np.float64] = np.floor(values * scale)
+    return positions.astype(np.int32)
+
+
 def map_to_char_vectorized(
-    values: npt.NDArray[np.float32], char_array: npt.NDArray[np.str_]
+    values: npt.NDArray[np.float64], char_array: npt.NDArray[np.str_]
 ) -> npt.NDArray[np.str_]:
-    positions: npt.NDArray[np.int32] = (
-        np.digitize(values, np.linspace(0, 256, len(char_array) + 1)) - 1
-    )
+    positions: npt.NDArray[np.int32] = _map_values_to_positions(values, len(char_array))
     return char_array[positions]
 
 
@@ -129,8 +148,11 @@ def create_cairo_font_face_for_file(
 
 
 def create_ascii_image(
-    ascii_art: AsciiImage, image_colors: AsciiColors
-) -> cairo.ImageSurface:
+    ascii_art: AsciiImage,
+    image_colors: AsciiColors,
+    gray_array: npt.NDArray[np.float64],
+    display_formats: list[DisplayFormats],
+) -> list[cairo.ImageSurface]:
     global face
     rows = len(ascii_art)
     columns = len(ascii_art[0])
@@ -138,13 +160,23 @@ def create_ascii_image(
     surface_width = int(Font.Width.value * columns)
     surface_height = int(Font.Height.value * rows)
 
-    surface = cairo.ImageSurface(cairo.FORMAT_RGB24, surface_width, surface_height)
-    context = cairo.Context(surface)
+    surfaces: list[cairo.ImageSurface] = [
+        cairo.ImageSurface(cairo.FORMAT_RGB24, surface_width, surface_height)
+        for _ in display_formats
+    ]
+    contexts: list[CairoContext] = [
+        CairoContextFactory.create(display_format, surface)
+        for display_format, surface in zip(display_formats, surfaces)
+    ]
 
     if face is None:
         face = create_cairo_font_face_for_file(Font.Name.value, 0)
-    context.set_font_face(face)
-    context.set_font_size(12)
+
+    for cairo_context in contexts:
+        cairo_context.context.set_font_face(face)
+        cairo_context.context.set_font_size(12)
+        cairo_context.context.set_source_rgb(0, 0, 0)
+        cairo_context.context.paint()
 
     y = 0
     for row in range(rows):
@@ -152,14 +184,15 @@ def create_ascii_image(
         for column in range(columns):
             char = ascii_art[row][column]
             color = image_colors[row][column]
-            context.set_source_rgb(color[0] / 255, color[1] / 255, color[2] / 255)
-            context.move_to(x, y + Font.Height.value)
-            context.show_text(char)
+            luminance = gray_array[row][column]
+            for cairo_context in contexts:
+                cairo_context.set_color(color, luminance)
+                cairo_context.context.move_to(x, y + Font.Height.value)
+                cairo_context.context.show_text(char)
             x += Font.Width.value
-
         y += Font.Height.value
 
-    return surface
+    return surfaces
 
 
 def rescale_image(image: Image.Image, new_height: int) -> Image.Image:

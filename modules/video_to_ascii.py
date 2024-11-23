@@ -1,6 +1,7 @@
 import os
 import shutil
 from multiprocessing import Pool, cpu_count
+from typing import Any, Type
 
 import numpy as np
 import numpy.typing as npt
@@ -9,22 +10,16 @@ from cairo import ImageSurface
 from cv2 import COLOR_BGR2RGB, VideoCapture, cvtColor
 from cv2.typing import MatLike
 from PIL import Image
-from typing import Any, Type
 
 from modules.ascii_dict import AsciiDict
 from modules.dithering import DitheringStrategy
-from modules.dithering.atkinson import DitheringAtkinson
 from modules.image_to_ascii import ascii_convert
+from modules.save.formats import DisplayFormats
 from modules.utils.custom_types import FrameData, Frames
-from modules.utils.ffmpeg import (
-    add_audio_to_video,
-    extract_audio,
-    get_total_frames,
-    get_video_framerate,
-    get_video_resolution,
-    merge_frames,
-    resize_video,
-)
+from modules.utils.ffmpeg import (add_audio_to_video, extract_audio,
+                                  get_total_frames, get_video_framerate,
+                                  get_video_resolution, merge_frames,
+                                  resize_video)
 from modules.utils.font import Font
 from modules.utils.utils import create_char_array
 
@@ -37,19 +32,28 @@ class ProcessingParameters:
     def __init__(self, *_: Any) -> None:
         pass
 
-    def __new__(cls, width: int = 0, height: int = 0) -> "ProcessingParameters":
+    def __new__(
+        cls,
+        width: int,
+        height: int,
+        dithering_strategy: Type[DitheringStrategy],
+    ) -> "ProcessingParameters":
         if not cls._instance:
             cls._instance = super(ProcessingParameters, cls).__new__(cls)
             ascii_dict = (
                 AsciiDict.HighAsciiDict
                 if width * height
-                >= (1920 // Font.Width.value) * (1080 // Font.Height.value)
+                >= (1600 // Font.Width.value) * (900 // Font.Height.value)
                 else AsciiDict.LowAsciiDict
             )
             cls._instance._char_array = create_char_array(ascii_dict)
-            cls._instance._dithering_strategy = DitheringAtkinson
+            cls._instance._dithering_strategy = dithering_strategy
 
         return cls._instance
+
+    @staticmethod
+    def get_instance() -> "ProcessingParameters":
+        return ProcessingParameters(0, 0, DitheringStrategy)
 
     @property
     def char_array(self) -> npt.NDArray[np.str_]:
@@ -99,12 +103,13 @@ def process_frame(frame_data: FrameData) -> None:
     frame: Image.Image = frame_data.frame
     frame_id: int = frame_data.frame_id
     video_name: str = frame_data.video_name
-    ascii_image: ImageSurface = ascii_convert(
+    ascii_image: list[ImageSurface] = ascii_convert(
         frame,
-        ProcessingParameters().char_array,
-        ProcessingParameters().dithering_strategy,
+        ProcessingParameters.get_instance().char_array,
+        ProcessingParameters.get_instance().dithering_strategy,
+        [DisplayFormats.COLOR],
     )
-    ascii_image.write_to_png(f"./{video_name}/{frame_id:04d}.png")
+    ascii_image[0].write_to_png(f"./{video_name}/{frame_id:04d}.png")
 
 
 def process_frames(
@@ -144,7 +149,11 @@ def process_frames(
     return frames_filenames
 
 
-def video_image_convert(video: str, height: int) -> None:
+def video_image_convert(
+    video: str,
+    height: int,
+    dithering_strategy: Type[DitheringStrategy],
+) -> None:
     video_name: str = video.split(".")[0]
     video_width, video_height = get_video_resolution(video)
     new_height: int = int(height / Font.Height.value)
@@ -157,7 +166,7 @@ def video_image_convert(video: str, height: int) -> None:
     downsize_video_path: str = f"{video_name}-downsize.mp4"
     resize_video(video, new_width, new_height, downsize_video_path)
 
-    ProcessingParameters(new_width, new_height)
+    ProcessingParameters(new_width, new_height, dithering_strategy)
 
     video_framerate: float = get_video_framerate(downsize_video_path)
     video_frames: int = get_total_frames(downsize_video_path)

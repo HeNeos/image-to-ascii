@@ -1,6 +1,9 @@
 import argparse
-from typing import cast
+from typing import Type, cast
 
+from modules.dithering import DitheringStrategy
+from modules.dithering.atkinson import DitheringAtkinson
+from modules.dithering.floyd_steinberg import DitheringFloydSteinberg
 from modules.image_to_ascii import run
 from modules.text_to_text import text_to_text
 from modules.video_to_ascii import video_image_convert
@@ -12,6 +15,11 @@ valid_formats = ["image", "text", "video"]
 #     "text": SaveFormats.Text,
 #     "image": SaveFormats.Image,
 # }
+
+dithering_strategy: dict[str, Type[DitheringStrategy]] = {
+    DitheringAtkinson.name: DitheringAtkinson,
+    DitheringFloydSteinberg.name: DitheringFloydSteinberg,
+}
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -48,6 +56,14 @@ if __name__ == "__main__":
         help="text to image",
         default=argparse.SUPPRESS,
     )
+    parser.add_argument(
+        "-d",
+        "--dithering",
+        nargs="?",
+        type=str,
+        help="dithering strategy",
+        default=argparse.SUPPRESS,
+    )
     # parser.add_argument("--save", nargs="?", type=str, default=argparse.SUPPRESS)
     args: argparse.Namespace = parser.parse_args()
 
@@ -80,17 +96,32 @@ if __name__ == "__main__":
             args.filename = 0
 
     if "height" not in args:
-        args.height = 10
+        args.height = 720
+
+    if "dithering" not in args:
+        args.dithering = "atkinson"
 
     if args.format == "video":
-        video_image_convert(video=cast(str, args.filename), height=args.height)
+        video_image_convert(
+            video=cast(str, args.filename),
+            height=args.height,
+            dithering_strategy=dithering_strategy.get(
+                args.dithering, DitheringAtkinson
+            ),
+        )
     elif args.format == "text":
         text_to_text(
             text=args.text,
             height=args.height,
+            dithering_strategy=dithering_strategy.get(
+                args.dithering, DitheringAtkinson
+            ),
         )
     elif args.format == "image":
         run(
             image_path=cast(str, args.filename),
             height=args.height,
+            dithering_strategy=dithering_strategy.get(
+                args.dithering, DitheringAtkinson
+            ),
         )

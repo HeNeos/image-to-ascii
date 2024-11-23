@@ -1,6 +1,7 @@
-from typing import List, Tuple, Union, TypeAlias
-from PIL import Image
 from dataclasses import dataclass
+from typing import List, Tuple, TypeAlias, Union
+
+from PIL import Image
 
 Scale: TypeAlias = Union[float, int]
 Color: TypeAlias = Tuple[int, int, int]

@@ -8,8 +8,8 @@ from . import DitheringStrategy
 
 
 @dataclass
-class DitheringAtkinson(DitheringStrategy):
-    name: str = "atkinson"
+class DitheringFloydSteinberg(DitheringStrategy):
+    name = "floyd_steinberg"
 
     @staticmethod
     @jit(
@@ -34,17 +34,13 @@ class DitheringAtkinson(DitheringStrategy):
                 image_array[row, column] = new_pixel
                 error = new_pixel - old_pixel
                 if column + 1 < width:
-                    image_array[row, column + 1] += error * 1 / 8
-                if column + 2 < width:
-                    image_array[row, column + 2] += error * 1 / 8
+                    image_array[row, column + 1] += error * 7 / 16
                 if row + 1 < height and column > 0:
-                    image_array[row + 1, column - 1] += error * 1 / 8
+                    image_array[row + 1, column - 1] += error * 3 / 16
                 if row + 1 < height:
-                    image_array[row + 1, column] += error * 1 / 8
+                    image_array[row + 1, column] += error * 5 / 16
                 if row + 1 < height and column + 1 < width:
-                    image_array[row + 1, column + 1] += error * 1 / 8
-                if row + 2 < height:
-                    image_array[row + 2, column] += error * 1 / 8
+                    image_array[row + 1, column + 1] += error * 1 / 16
         image_array = np.clip(image_array, 0.0, 255.0)
 
         return image_array

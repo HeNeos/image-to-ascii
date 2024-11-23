@@ -1,8 +1,11 @@
 import os
+from typing import Type
 
 from PIL import Image, ImageDraw, ImageFont
 
+from modules.dithering import DitheringStrategy
 from modules.image_to_ascii import run
+from modules.save.formats import DisplayFormats
 from modules.utils.font import Font
 
 
@@ -27,9 +30,8 @@ def generate_image_text(text: str) -> str:
 
 
 def text_to_text(
-    text: str,
-    height: int,
+    text: str, height: int, dithering_strategy: Type[DitheringStrategy]
 ) -> None:
     image_path = generate_image_text(text)
-    run(image_path, height)
+    run(image_path, height, dithering_strategy, [DisplayFormats.GRAY_SCALE])
     os.remove(image_path)

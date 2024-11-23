@@ -10,6 +10,6 @@ class DitheringStrategy(ABC):
     @staticmethod
     @abstractmethod
     def dithering(
-        image: npt.NDArray[np.float32], quantization_levels: int
-    ) -> npt.NDArray[np.float32]:
+        image_array: npt.NDArray[np.float64], quantization_levels: int
+    ) -> npt.NDArray[np.float64]:
         pass
