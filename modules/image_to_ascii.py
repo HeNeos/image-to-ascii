@@ -23,7 +23,7 @@ def process_image(
 
     # custom grayscale
     gray_array: npt.NDArray[np.float64] = np.clip(
-        np.dot(img_array[..., :3], [0.3490, 0.5870, 0.2040]), 0.0, 255.0
+        np.dot(img_array[..., :3], [0.3190, 0.5870, 0.1240]), 0.0, 255.0
     )
 
     if dithering_strategy is not None:
