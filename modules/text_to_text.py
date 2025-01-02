@@ -1,5 +1,4 @@
 import os
-from typing import Type
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -30,7 +29,7 @@ def generate_image_text(text: str) -> str:
 
 
 def text_to_text(
-    text: str, height: int, dithering_strategy: Type[DitheringStrategy]
+    text: str, height: int, dithering_strategy: type[DitheringStrategy] | None
 ) -> None:
     image_path = generate_image_text(text)
     run(image_path, height, dithering_strategy, [DisplayFormats.GRAY_SCALE])

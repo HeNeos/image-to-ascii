@@ -25,6 +25,11 @@ class CairoGrayContext(CairoContext):
         self.context.set_source_rgb(luminance / 255, luminance / 255, luminance / 255)
 
 
+class CairoBlackAndWhiteContext(CairoContext):
+    def set_color(self, color: Color, luminance: float) -> None:
+        self.context.set_source_rgb(1.0, 1.0, 1.0)
+
+
 class CairoContextFactory:
     @staticmethod
     def create(display_format: DisplayFormats, surface: ImageSurface) -> CairoContext:
@@ -32,3 +37,5 @@ class CairoContextFactory:
             return CairoColorContext(surface)
         if display_format is DisplayFormats.GRAY_SCALE:
             return CairoGrayContext(surface)
+        if display_format is DisplayFormats.BLACK_AND_WHITE:
+            return CairoBlackAndWhiteContext(surface)

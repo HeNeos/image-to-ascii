@@ -1,5 +1,3 @@
-from typing import Type
-
 import numpy as np
 import numpy.typing as npt
 from cairo import ImageSurface
@@ -17,7 +15,7 @@ from modules.utils.utils import (create_ascii_image, create_char_array,
 def process_image(
     image: Image.Image,
     char_array: npt.NDArray[np.str_],
-    dithering_strategy: Type[DitheringStrategy] | None = None,
+    dithering_strategy: type[DitheringStrategy] | None = None,
 ) -> tuple[AsciiImage, AsciiColors, npt.NDArray[np.float64]]:
     img_array: npt.NDArray[np.uint8] = np.array(image, dtype=np.uint8)
 
@@ -40,7 +38,7 @@ def process_image(
 def ascii_convert(
     image: Image.Image,
     char_array: npt.NDArray[np.str_],
-    dithering_strategy: Type[DitheringStrategy],
+    dithering_strategy: type[DitheringStrategy] | None,
     display_formats: list[DisplayFormats],
 ) -> list[ImageSurface]:
     grid, image_colors, gray_array = process_image(
@@ -52,10 +50,11 @@ def ascii_convert(
 def run(
     image_path: str,
     height: int,
-    dithering_strategy: Type[DitheringStrategy],
+    dithering_strategy: type[DitheringStrategy] | None,
     display_formats: list[DisplayFormats] = [
         DisplayFormats.COLOR,
         DisplayFormats.GRAY_SCALE,
+        DisplayFormats.BLACK_AND_WHITE,
     ],
 ) -> None:
     image_name: str = image_path.split(".")[0]

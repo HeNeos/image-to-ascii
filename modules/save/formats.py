@@ -5,6 +5,7 @@ from enum import Enum
 class DisplayFormats(Enum):
     COLOR = "color"
     GRAY_SCALE = "gray_scale"
+    BLACK_AND_WHITE = "black_and_white"
 
 
 class SaveFormats(Enum):

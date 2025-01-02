@@ -1,7 +1,7 @@
 import os
 import shutil
 from multiprocessing import Pool, cpu_count
-from typing import Any, Type
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
@@ -36,7 +36,7 @@ class ProcessingParameters:
         cls,
         width: int,
         height: int,
-        dithering_strategy: Type[DitheringStrategy],
+        dithering_strategy: type[DitheringStrategy] | None,
     ) -> "ProcessingParameters":
         if not cls._instance:
             cls._instance = super(ProcessingParameters, cls).__new__(cls)
@@ -64,11 +64,13 @@ class ProcessingParameters:
         self._char_array = char_array
 
     @property
-    def dithering_strategy(self) -> Type[DitheringStrategy]:
+    def dithering_strategy(self) -> type[DitheringStrategy] | None:
         return self._dithering_strategy
 
     @dithering_strategy.setter
-    def dithering_strategy(self, dithering_strategy: Type[DitheringStrategy]) -> None:
+    def dithering_strategy(
+        self, dithering_strategy: type[DitheringStrategy] | None
+    ) -> None:
         self._dithering_strategy = dithering_strategy
 
 
@@ -107,7 +109,7 @@ def process_frame(frame_data: FrameData) -> None:
         frame,
         ProcessingParameters.get_instance().char_array,
         ProcessingParameters.get_instance().dithering_strategy,
-        [DisplayFormats.COLOR],
+        [DisplayFormats.BLACK_AND_WHITE],
     )
     ascii_image[0].write_to_png(f"./{video_name}/{frame_id:04d}.png")
 
@@ -152,7 +154,7 @@ def process_frames(
 def video_image_convert(
     video: str,
     height: int,
-    dithering_strategy: Type[DitheringStrategy],
+    dithering_strategy: type[DitheringStrategy] | None,
 ) -> None:
     video_name: str = video.split(".")[0]
     video_width, video_height = get_video_resolution(video)
