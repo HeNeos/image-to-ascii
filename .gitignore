@@ -3,5 +3,6 @@
 assets
 **/*.png
 **/*.jpeg
+**/*.mp3
 **/*.mp4
 **/*.webm
