@@ -4,6 +4,9 @@ from typing import Type, cast
 from modules.dithering import DitheringStrategy
 from modules.dithering.atkinson import DitheringAtkinson
 from modules.dithering.floyd_steinberg import DitheringFloydSteinberg
+from modules.dithering.jarvis_judice_ninke import DitheringJarvisJudiceNinke
+from modules.dithering.riemersma_naive import DitheringRiemersmaNaive
+from modules.dithering.riemersma import DitheringRiemersma
 from modules.image_to_ascii import run
 from modules.text_to_text import text_to_text
 from modules.video_to_ascii import video_image_convert
@@ -13,6 +16,9 @@ valid_formats = ["image", "text", "video"]
 dithering_strategy: dict[str, Type[DitheringStrategy]] = {
     DitheringAtkinson.name: DitheringAtkinson,
     DitheringFloydSteinberg.name: DitheringFloydSteinberg,
+    DitheringJarvisJudiceNinke.name: DitheringJarvisJudiceNinke,
+    DitheringRiemersmaNaive.name: DitheringRiemersmaNaive,
+    DitheringRiemersma.name: DitheringRiemersma,
 }
 
 if __name__ == "__main__":
