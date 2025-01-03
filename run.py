@@ -44,7 +44,7 @@ if __name__ == "__main__":
         "--format",
         nargs="?",
         type=str,
-        help="input format",
+        help=f"{', '.join(valid_formats)}",
         default=argparse.SUPPRESS,
     )
     parser.add_argument(
@@ -52,7 +52,7 @@ if __name__ == "__main__":
         "--height",
         nargs="?",
         type=int,
-        help="height to resize",
+        help="output height",
         default=argparse.SUPPRESS,
     )
     parser.add_argument(
@@ -60,7 +60,7 @@ if __name__ == "__main__":
         "--text",
         nargs="?",
         type=str,
-        help="text to image",
+        help="text to ascii",
         default=argparse.SUPPRESS,
     )
     parser.add_argument(
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         "--dithering",
         nargs="?",
         type=str,
-        help="dithering strategy",
+        help=f"{', '.join(dithering_strategy.keys())}",
         default=argparse.SUPPRESS,
     )
     parser.add_argument(
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         "--display_format",
         nargs="?",
         type=str,
-        help="display format",
+        help=f"{', '.join(display_formats.keys())}",
         default=argparse.SUPPRESS,
     )
     args: argparse.Namespace = parser.parse_args()
