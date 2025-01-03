@@ -10,6 +10,7 @@ from modules.dithering.riemersma import DitheringRiemersma
 from modules.image_to_ascii import run
 from modules.text_to_text import text_to_text
 from modules.video_to_ascii import video_image_convert
+from modules.save.formats import DisplayFormats
 
 valid_formats = ["image", "text", "video"]
 
@@ -19,6 +20,12 @@ dithering_strategy: dict[str, Type[DitheringStrategy]] = {
     DitheringJarvisJudiceNinke.name: DitheringJarvisJudiceNinke,
     DitheringRiemersmaNaive.name: DitheringRiemersmaNaive,
     DitheringRiemersma.name: DitheringRiemersma,
+}
+
+display_formats: dict[str, "DisplayFormats"] = {
+    DisplayFormats.BLACK_AND_WHITE.name: DisplayFormats.BLACK_AND_WHITE,
+    DisplayFormats.COLOR.name: DisplayFormats.COLOR,
+    DisplayFormats.GRAY_SCALE.name: DisplayFormats.GRAY_SCALE,
 }
 
 if __name__ == "__main__":
@@ -64,6 +71,14 @@ if __name__ == "__main__":
         help="dithering strategy",
         default=argparse.SUPPRESS,
     )
+    parser.add_argument(
+        "-df",
+        "--display_format",
+        nargs="?",
+        type=str,
+        help="display format",
+        default=argparse.SUPPRESS,
+    )
     args: argparse.Namespace = parser.parse_args()
 
     if "format" not in args:
@@ -92,23 +107,32 @@ if __name__ == "__main__":
     if "dithering" not in args:
         args.dithering = ""
 
+    if "display_format" not in args:
+        args.display_format = ""
+
     dithering: type[DitheringStrategy] | None = dithering_strategy.get(args.dithering)
+    display_format: DisplayFormats = display_formats.get(
+        args.display_format, DisplayFormats.COLOR
+    )
 
     if args.format == "video":
         video_image_convert(
             video=cast(str, args.filename),
             height=args.height,
             dithering_strategy=dithering,
+            display_format=display_format,
         )
     elif args.format == "text":
         text_to_text(
             text=args.text,
             height=args.height,
             dithering_strategy=dithering,
+            display_format=display_format,
         )
     elif args.format == "image":
         run(
             image_path=cast(str, args.filename),
             height=args.height,
             dithering_strategy=dithering,
+            display_formats=[display_format],
         )
