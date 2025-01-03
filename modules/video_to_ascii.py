@@ -175,21 +175,33 @@ def video_image_convert(
     video: str,
     height: int,
     dithering_strategy: type[DitheringStrategy] | None,
+    display_format: "DisplayFormats",
 ) -> None:
+    if height % 2 == 1:
+        height += 1
     video_name: str = video.split(".")[0]
     video_width, video_height = get_video_resolution(video)
-    new_height: int = int(height / Font.Height.value)
+    width = int(video_width * height / video_height)
+    if width % 2 == 1:
+        width += 1
+    downsize_height: int = int(height / Font.Height.value)
+    if downsize_height % 2 == 1:
+        downsize_height += 1
 
-    scale_factor: float = new_height / video_height
-    new_width = int(Font.Height.value / Font.Width.value * scale_factor * video_width)
-    if new_width % 2 == 1:
-        new_width += 1
+    downsize_width = int(
+        downsize_height
+        * video_width
+        * (Font.Height.value / Font.Width.value)
+        / video_height
+    )
+    if downsize_width % 2 == 1:
+        downsize_width += 1
 
     downsize_video_path: str = f"{video_name}-downsize.mp4"
-    resize_video(video, new_width, new_height, downsize_video_path)
+    resize_video(video, downsize_width, downsize_height, downsize_video_path)
 
     ProcessingParameters(
-        new_width, new_height, [DisplayFormats.COLOR], dithering_strategy
+        downsize_width, downsize_height, [display_format], dithering_strategy
     )
 
     video_framerate: float = get_video_framerate(downsize_video_path)
@@ -211,5 +223,18 @@ def video_image_convert(
 
     video_path = f"/tmp/{video_name}.mp4"
     merge_frames(frames_filenames, video_framerate, video_path)
-    output_path = f"{video_name}_ascii.mp4"
+    output_path = f"{video_name}_ascii_temp.mp4"
     add_audio_to_video(video_path, audio_path, output_path)
+    output_video_width, output_video_height = get_video_resolution(output_path)
+
+    if output_video_height != height or output_video_width != width:
+        resize_video(
+            output_path,
+            width,
+            height,
+            f"{video_name}_ascii.mp4",
+            compression_level=22,
+        )
+        os.remove(output_path)
+    else:
+        os.rename(output_path, f"{video_name}_ascii.mp4")

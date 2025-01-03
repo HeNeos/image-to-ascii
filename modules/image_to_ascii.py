@@ -24,8 +24,8 @@ def process_image(
     img_array: npt.NDArray[np.uint8] = np.array(image, dtype=np.uint8)
 
     # custom grayscale
-    gray_array: npt.NDArray[np.float64] = np.dot(
-        img_array[..., :3], [0.2890, 0.6070, 0.1040]
+    gray_array: npt.NDArray[np.float64] = np.clip(
+        np.dot(img_array[..., :3], [0.3190, 0.5870, 0.1240]), 0.0, 255.0
     )
 
     if dithering_strategy is not None:
@@ -57,11 +57,7 @@ def run(
     image_path: str,
     height: int,
     dithering_strategy: type[DitheringStrategy] | None,
-    display_formats: list[DisplayFormats] = [
-        DisplayFormats.COLOR,
-        DisplayFormats.GRAY_SCALE,
-        DisplayFormats.BLACK_AND_WHITE,
-    ],
+    display_formats: list[DisplayFormats],
 ) -> None:
     image_name: str = image_path.split(".")[0]
     image: Image.Image = Image.open(image_path).convert("RGB")

@@ -57,7 +57,13 @@ def get_video_resolution(video_path: str) -> tuple[int, int]:
     return video_width, video_height
 
 
-def resize_video(video_path: str, width: int, height: int, output_path: str) -> None:
+def resize_video(
+    video_path: str,
+    width: int,
+    height: int,
+    output_path: str,
+    compression_level: int = 16,
+) -> None:
     ffmpeg_command = [
         "ffmpeg",
         "-loglevel",
@@ -68,7 +74,7 @@ def resize_video(video_path: str, width: int, height: int, output_path: str) -> 
         "-vf",
         f"scale={width}:{height}",
         "-crf",
-        "15",
+        f"{compression_level}",
         "-preset",
         "fast",
         output_path,
