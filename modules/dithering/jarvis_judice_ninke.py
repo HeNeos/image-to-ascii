@@ -32,7 +32,7 @@ class DitheringJarvisJudiceNinke(DitheringStrategy):
                 old_pixel = image_array[row, column]
                 new_pixel = np.round(old_pixel / scale) * scale
                 image_array[row, column] = new_pixel
-                error = new_pixel - old_pixel
+                error = old_pixel - new_pixel
                 if column + 1 < width:
                     image_array[row, column + 1] += error * 7 / 48
                 if column + 2 < width:
