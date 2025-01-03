@@ -1,26 +1,11 @@
 import argparse
-from typing import Type, cast
+from typing import cast
 
 from modules.dithering import DitheringStrategy
-from modules.dithering.atkinson import DitheringAtkinson
-from modules.dithering.floyd_steinberg import DitheringFloydSteinberg
-from modules.dithering.jarvis_judice_ninke import DitheringJarvisJudiceNinke
-from modules.dithering.riemersma_naive import DitheringRiemersmaNaive
-from modules.dithering.riemersma import DitheringRiemersma
-from modules.image_to_ascii import run
-from modules.text_to_text import text_to_text
-from modules.video_to_ascii import video_image_convert
+from modules.dithering.utils import get_dithering_strategy
 from modules.save.formats import DisplayFormats
 
 valid_formats = ["image", "text", "video"]
-
-dithering_strategy: dict[str, Type[DitheringStrategy]] = {
-    DitheringAtkinson.name: DitheringAtkinson,
-    DitheringFloydSteinberg.name: DitheringFloydSteinberg,
-    DitheringJarvisJudiceNinke.name: DitheringJarvisJudiceNinke,
-    DitheringRiemersmaNaive.name: DitheringRiemersmaNaive,
-    DitheringRiemersma.name: DitheringRiemersma,
-}
 
 display_formats: dict[str, "DisplayFormats"] = {
     DisplayFormats.BLACK_AND_WHITE.name: DisplayFormats.BLACK_AND_WHITE,
@@ -68,7 +53,7 @@ if __name__ == "__main__":
         "--dithering",
         nargs="?",
         type=str,
-        help=f"{', '.join(dithering_strategy.keys())}",
+        help="atkinson, floyd_steinberg, jarvis_judice_ninke, riemersma_naive, riemersma",  # noqa: E501
         default=argparse.SUPPRESS,
     )
     parser.add_argument(
@@ -110,12 +95,14 @@ if __name__ == "__main__":
     if "display_format" not in args:
         args.display_format = ""
 
-    dithering: type[DitheringStrategy] | None = dithering_strategy.get(args.dithering)
+    dithering: type[DitheringStrategy] | None = get_dithering_strategy(args.dithering)
     display_format: DisplayFormats = display_formats.get(
         args.display_format, DisplayFormats.COLOR
     )
 
     if args.format == "video":
+        from modules.video_to_ascii import video_image_convert
+
         video_image_convert(
             video=cast(str, args.filename),
             height=args.height,
@@ -123,6 +110,8 @@ if __name__ == "__main__":
             display_format=display_format,
         )
     elif args.format == "text":
+        from modules.text_to_text import text_to_text
+
         text_to_text(
             text=args.text,
             height=args.height,
@@ -130,6 +119,8 @@ if __name__ == "__main__":
             display_format=display_format,
         )
     elif args.format == "image":
+        from modules.image_to_ascii import run
+
         run(
             image_path=cast(str, args.filename),
             height=args.height,
