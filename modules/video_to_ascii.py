@@ -16,10 +16,15 @@ from modules.dithering import DitheringStrategy
 from modules.image_to_ascii import ascii_convert
 from modules.save.formats import DisplayFormats
 from modules.utils.custom_types import FrameData, Frames
-from modules.utils.ffmpeg import (add_audio_to_video, extract_audio,
-                                  get_total_frames, get_video_framerate,
-                                  get_video_resolution, merge_frames,
-                                  resize_video)
+from modules.utils.ffmpeg import (
+    add_audio_to_video,
+    extract_audio,
+    get_total_frames,
+    get_video_framerate,
+    get_video_resolution,
+    merge_frames,
+    resize_video,
+)
 from modules.utils.font import Font
 from modules.utils.utils import create_char_array
 
@@ -36,32 +41,47 @@ class ProcessingParameters:
         cls,
         width: int,
         height: int,
+        display_formats: list[DisplayFormats],
         dithering_strategy: type[DitheringStrategy] | None,
     ) -> "ProcessingParameters":
         if not cls._instance:
             cls._instance = super(ProcessingParameters, cls).__new__(cls)
-            ascii_dict = (
-                AsciiDict.HighAsciiDict
-                if width * height
-                >= (1600 // Font.Width.value) * (900 // Font.Height.value)
-                else AsciiDict.LowAsciiDict
-            )
-            cls._instance._char_array = create_char_array(ascii_dict)
+            ascii_dicts: list[AsciiDict] = [
+                (
+                    display_format.value.HighAsciiDict
+                    if width * height
+                    >= (1600 // Font.Width.value) * (900 // Font.Height.value)
+                    else display_format.value.LowAsciiDict
+                )
+                for display_format in display_formats
+            ]
+            cls._instance._char_arrays = [
+                create_char_array(ascii_dict) for ascii_dict in ascii_dicts
+            ]
+            cls._instance._display_formats = display_formats
             cls._instance._dithering_strategy = dithering_strategy
 
         return cls._instance
 
     @staticmethod
     def get_instance() -> "ProcessingParameters":
-        return ProcessingParameters(0, 0, DitheringStrategy)
+        return ProcessingParameters(0, 0, [DisplayFormats], DitheringStrategy)
 
     @property
-    def char_array(self) -> npt.NDArray[np.str_]:
-        return self._char_array
+    def char_arrays(self) -> list[npt.NDArray[np.str_]]:
+        return self._char_arrays
 
-    @char_array.setter
-    def char_array(self, char_array: npt.NDArray[np.str_]) -> None:
-        self._char_array = char_array
+    @char_arrays.setter
+    def char_arrays(self, char_arrays: list[npt.NDArray[np.str_]]) -> None:
+        self._char_arrays = char_arrays
+
+    @property
+    def display_formats(self) -> list[DisplayFormats]:
+        return self._display_formats
+
+    @display_formats.setter
+    def display_formats(self, display_formats: list[DisplayFormats]) -> None:
+        self._display_formats = display_formats
 
     @property
     def dithering_strategy(self) -> type[DitheringStrategy] | None:
@@ -107,9 +127,9 @@ def process_frame(frame_data: FrameData) -> None:
     video_name: str = frame_data.video_name
     ascii_image: list[ImageSurface] = ascii_convert(
         frame,
-        ProcessingParameters.get_instance().char_array,
+        ProcessingParameters.get_instance().char_arrays,
         ProcessingParameters.get_instance().dithering_strategy,
-        [DisplayFormats.BLACK_AND_WHITE],
+        ProcessingParameters.get_instance().display_formats,
     )
     ascii_image[0].write_to_png(f"./{video_name}/{frame_id:04d}.png")
 
@@ -168,7 +188,9 @@ def video_image_convert(
     downsize_video_path: str = f"{video_name}-downsize.mp4"
     resize_video(video, new_width, new_height, downsize_video_path)
 
-    ProcessingParameters(new_width, new_height, dithering_strategy)
+    ProcessingParameters(
+        new_width, new_height, [DisplayFormats.COLOR], dithering_strategy
+    )
 
     video_framerate: float = get_video_framerate(downsize_video_path)
     video_frames: int = get_total_frames(downsize_video_path)

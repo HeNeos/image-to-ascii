@@ -8,8 +8,7 @@ from numba import jit
 from PIL import Image
 
 from modules.ascii_dict import AsciiDict
-from modules.canvas_context.cairo_context import (CairoContext,
-                                                  CairoContextFactory)
+from modules.canvas_context.cairo_context import CairoContext, CairoContextFactory
 from modules.save.formats import DisplayFormats
 from modules.utils.custom_types import AsciiColors, AsciiImage
 from modules.utils.font import Font
@@ -43,11 +42,6 @@ def map_to_char_vectorized(
 ) -> npt.NDArray[np.str_]:
     positions: npt.NDArray[np.int32] = _map_values_to_positions(values, len(char_array))
     return char_array[positions]
-
-
-def map_to_char(gray_scale: float, ascii_dict: AsciiDict) -> str:
-    position: int = int(((len(ascii_dict.value) - 1) * gray_scale) / 255)
-    return ascii_dict.value[position]
 
 
 # https://www.cairographics.org/cookbook/freetypepython/
@@ -148,14 +142,14 @@ def create_cairo_font_face_for_file(
 
 
 def create_ascii_image(
-    ascii_art: AsciiImage,
+    ascii_arts: list[AsciiImage],
     image_colors: AsciiColors,
     gray_array: npt.NDArray[np.float64],
     display_formats: list[DisplayFormats],
 ) -> list[cairo.ImageSurface]:
     global face
-    rows = len(ascii_art)
-    columns = len(ascii_art[0])
+    rows = len(ascii_arts[0])
+    columns = len(ascii_arts[0][0])
 
     surface_width = int(Font.Width.value * columns)
     surface_height = int(Font.Height.value * rows)
@@ -182,13 +176,14 @@ def create_ascii_image(
     for row in range(rows):
         x = 0
         for column in range(columns):
-            char = ascii_art[row][column]
-            color = image_colors[row][column]
-            luminance = gray_array[row][column]
-            for cairo_context in contexts:
-                cairo_context.set_color(color, luminance)
-                cairo_context.context.move_to(x, y + Font.Height.value)
-                cairo_context.context.show_text(char)
+            for ascii_art in ascii_arts:
+                char = ascii_art[row][column]
+                color = image_colors[row][column]
+                luminance = gray_array[row][column]
+                for cairo_context in contexts:
+                    cairo_context.set_color(color, luminance)
+                    cairo_context.context.move_to(x, y + Font.Height.value)
+                    cairo_context.context.show_text(char)
             x += Font.Width.value
         y += Font.Height.value
 

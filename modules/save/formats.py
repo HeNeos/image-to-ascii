@@ -1,11 +1,13 @@
-from dataclasses import dataclass, field
 from enum import Enum
+
+from ..ascii_dict.color import AsciiDictColor
+from ..ascii_dict.black_and_white import AsciiDictBlackWhite
 
 
 class DisplayFormats(Enum):
-    COLOR = "color"
-    GRAY_SCALE = "gray_scale"
-    BLACK_AND_WHITE = "black_and_white"
+    COLOR = AsciiDictColor
+    GRAY_SCALE = AsciiDictColor
+    BLACK_AND_WHITE = AsciiDictBlackWhite
 
 
 class SaveFormats(Enum):
@@ -14,10 +16,11 @@ class SaveFormats(Enum):
     TEXT = "text"
 
 
-@dataclass
-class OutputFormats:
-    save_format: SaveFormats
-    display_format: list[DisplayFormats] = field(
-        default_factory=lambda: [DisplayFormats.COLOR]
-    )
-    output: bool = False
+# @dataclass
+# class OutputFormats:
+#     ascii_dict: AsciiDict
+#     save_format: SaveFormats
+#     display_format: list[DisplayFormats] = field(
+#         default_factory=lambda: [DisplayFormats.COLOR]
+#     )
+#     output: bool = False

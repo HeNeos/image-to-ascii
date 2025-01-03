@@ -134,9 +134,9 @@ def merge_videos(video_files: list[str], output_path: str) -> None:
         "-b:v",
         "6M",
         "-crf",
-        "21",
+        "22",
         "-preset",
-        "medium",
+        "fast",
         "-c:v",
         "libx264",
         "-c:a",
@@ -177,9 +177,9 @@ def merge_frames(
         "-g",
         "128",
         "-crf",
-        "20",
+        "22",
         "-preset",
-        "medium",
+        "fast",
         output_path,
     ]
     subprocess.run(command, check=True)
