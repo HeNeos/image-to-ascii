@@ -95,7 +95,7 @@ if __name__ == "__main__":
     if "display_format" not in args:
         args.display_format = ""
 
-    dithering: type[DitheringStrategy] | None = get_dithering_strategy(args.dithering)
+    dithering: DitheringStrategy | None = get_dithering_strategy(args.dithering)
     display_format: DisplayFormats = display_formats.get(
         args.display_format, DisplayFormats.COLOR
     )

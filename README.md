@@ -33,14 +33,17 @@ This project allows you to convert images, videos, or text into ASCII art. It su
 To convert an image, video, or text to ASCII text, run the `run.py` script with the appropriate parameters:
 
 ```bash
-python run.py --filename path/to/your/file --format image --dithering FloydSteinberg
+python run.py --filename path/to/your/file --format <image/text/video> --height output_height --dithering <floyd_steinberg/atkinson/jarvis_judice_ninke/riemersma_naive/riemersma> -of <BLACK_AND_WHITE/GRAY_SCALE/COLOR>
 ```
 
 ## Parameters
 
 - `--filename`: Path to the input file (image, video, or text).
+- `--height`: Output height.
 - `--format`: Input format (image, video, text).
-- `--dithering`: Dithering strategy (Atkinson, FloydSteinberg, JarvisJudiceNinke, RiemersmaNaive, Riemersma).
+- `--dithering`: Dithering strategy (atkinson, floyd_steinberg, jarvis_judice_ninke, riemersma_naive, riemersma).
+- `--display_format`: Display format (BLACK_AND_WHITE, GRAY_SCALE, COLOR).
+- `--text`: Text to convert to ascii.
 
 ## Features
 

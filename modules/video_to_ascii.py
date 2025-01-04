@@ -174,7 +174,7 @@ def process_frames(
 def video_image_convert(
     video: str,
     height: int,
-    dithering_strategy: type[DitheringStrategy] | None,
+    dithering_strategy: DitheringStrategy | None,
     display_format: "DisplayFormats",
 ) -> None:
     if height % 2 == 1:

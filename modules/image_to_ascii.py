@@ -56,7 +56,7 @@ def ascii_convert(
 def run(
     image_path: str,
     height: int,
-    dithering_strategy: type[DitheringStrategy] | None,
+    dithering_strategy: DitheringStrategy | None,
     display_formats: list[DisplayFormats],
 ) -> None:
     image_name: str = image_path.split(".")[0]
