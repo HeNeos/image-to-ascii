@@ -7,5 +7,5 @@ class AsciiDictBlackWhite(Enum):
         + '"'
         + "~^=;!><+\\/*?crL)7T(|zJsviCltF1}{I3fY[]5nu2xjZoSyeaEPVhkU694KGwbdqOpXHAmRD#08WBM%N$Qg&@"  # noqa: E501
     )
-    HighAsciiDict = "    ``..':;*zsvnuoawhbB@"
-    LowAsciiDict = "    `.':;*zsvuwW0@"
+    HighAsciiDict = "    ``..':;*c7t3eK6ON&@"
+    LowAsciiDict = "   ``.:;*vx5K4&@"
