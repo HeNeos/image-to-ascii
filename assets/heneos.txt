@@ -1,96 +1,60 @@
-                                                                                                ''    ''  ''  ''                                                                                            
-                                                                                                  ''                          ''                                                                            
-                                                                      ''''    ''''                ''        ''                                                                                              
-                                                                                                        ''''                  ''                                                                            
-                                                                ''          ''''                    ''              ''''''                                                                                  
-                                                                      ''''                      ((((((((''''                  ''                                                                            
-                                                                    ''        ''''((//++**&&%%%%XX%%**%%XX%%%%&&****//((''                                                                                  
-                                                                          ((++**%%XXXXXXXXXXXXXXXX&&  &&XX%%XXXXXXXXXXXX%%**//((                                                                            
-                                        ''                    ''    ((++&&XXXXXXXXXXXXXXXXXXXX%%XX((  //XXXXXXXXXXXXXXXXXXXXXXXX&&++((            ''                                                        
-                                  ''''      ''''            ''  //**%%XXXXXXXXXXXXXXXXXXXX%%XXXX**''    &&XXXXXXXXXXXXXXXXXXXXXXXXXX%%**((      ''        ''                                                
-                                ''                      ''  //&&XXXXXXXX%%XXXXXXXXXXXXXXXX%%XXXX((      //XXXXXXXXXXXXXXXXXXXXXX%%XXXXXX%%&&//          ''    ''                                            
-                                ''    ''''              ((**XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**          &&XXXXXXXXXXXXXXXXXXXXXXXX%%%%XXXX%%&&//    ''    ((                                              
-                                              ''    ''++XXXX%%XX%%XXXXXXXXXXXXXXXX%%XXXXXXXX%%//    ''    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%++''  ''    ''                                            
-                                  ''      ''    ''//&&XXXXXXXX%%XX%%%%%%XXXXXX%%XXXXXXXXXXXX**              %%XXXXXXXXXXXXXXXXXXXX%%%%%%XXXXXXXXXXXX&&((                                                    
-                                  ''    ''    ((++%%XXXXXXXXXXXXXXXXXXXX%%XXXXXXXXXXXXXXXX%%//    ''  ''    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX++                                                  
-                                  ''    ''  ((**XXXXXXXXXXXXXX%%XXXXXXXXXXXXXX%%XXXXXXXXXX&&        ''  ''    %%XXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXX%%XXXXXXXX**''                                              
-                    ''      ''      ''    ((&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXX((  ''''          ''((XXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&((  ''    ''    ''                            
-                ''                    ''((%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&  ''                ''&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX&&((    ''  ((                                
-                ''                  ''((%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX//                      //XXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXX%%XXXX%%XXXXXX&&((    ''  ''                              
-                              ''    ((XXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XX&&  ''  ''                ''&&XXXXXX%%XXXXXXXXXXXXXXXXXXXXXX%%XXXXXX%%%%XXXX%%((''      ''                            
-                  ''      ''      ((%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX((                          //XXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXX%%((  ''                                
-                  ''    ''''    ''&&XX%%XXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XX**  ''  ''                    ''&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX&&''                                  
-                  ''    ''    ''**XXXXXX%%%%XX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX((''  ''            ''          //%%XXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXX**                                  
-                            ''//XXXXXX%%XXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&            ''                    %%XX%%XX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX%%++                                
-                  ''  ''    ((XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX((                                  //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX((      ''                      
-                    ''  ''''&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX**''                                ''''&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXX**''        ''    ''            
-                          ++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX//        ''                          ''//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//                            
-                        ((%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**          ''                      ''  ''  &&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXX%%((                          
-                ''  ''  **XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXX%%//    ''    ''                            ''//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX%%XX**          ''              
-                      ((XX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXX**              ''                    ''    ''  &&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXX%%((    ''    ''            
-                  ''  **XX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%//              ''                    ''  ''    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX%%XX**                        
-                    ((XXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX&&          ''    ''                      ''        &&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XX%%XXXX%%XX%%%%((''                    
-                    **XX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXX((  ''                                            ''//XXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX++                      
-                  ''%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&  ''                                                ''&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&''                    
-                  //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX//                                                      //XXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//    ''              
-                  **XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XX&&  ''  ''                                            ''  ''&&XXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**    ''              
-                ((%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX((                                                          //XXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX%%''                  
-                //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**  ''  ''                                                    ''&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XX//                  
-                **XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX((''                                                ''          //%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX++                  
-                &&XXXX%%XXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&                                            ''                    %%XX%%XX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX&&                  
-    ''  ''    ((XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXXXXXXXX((                                                                  //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%''  ''            
-        ''    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX**''                                                                ''''&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%((                
-              ++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX//                                                                    ''//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//                
-              **XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**                                                                  ''  ''  &&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX++                
-              &&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXX%%//    ''                                                                  ''//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**                
-              &&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXX**                                                                    ''    ''  &&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**                
-              %%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%//              ''                                                    ''  ''    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&                
-          ''''%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX&&          ''    ''                                                      ''        &&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&                
-            ''%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXX((  ''                                                                            ''//XXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXX&&                
-            ''%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&  ''                                                                                ''&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&                
-            ''%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX//                                                                                      //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&                
-            ''%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XX&&  ''  ''                                                                                ''&&XXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&                
-              %%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX((                                                                                          //XXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXX&&                
-              &&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XX**  ''  ''                                                                                    ''&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**                
-    ''        **XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX((''  ''                                                                            ''          //%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**                
-    ''    ''  **XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&                                                                            ''                    %%XX%%XX%%XXXXXXXXXXXXXXXXXX%%XXXXXX++                
-            ''//XXXXXXXX%%XXXX%%XXXXXXXXXXXXXXXXXX((                                                                                                  //XXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX//                
-        ''    //XX%%XXXX%%XXXXXXXXXXXXXXXX%%XXXX**''                                                                                                ''''&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%((                
-        ''    ((%%XXXXXX%%XX%%XXXXXXXXXXXX%%XXXX//        ''                                                                                          ''//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&''                
-        ''''    &&XXXXXXXXXX%%XXXXXXXXXXXXXXXX**          ''                                                                                      ''  ''  &&XXXXXXXXXXXXXXXXXXXXXXXXXXXX**                  
-                ++XX%%XXXXXXXXXXXX%%XXXXXXXX%%//    ''    ''                                                                                            ''//XXXXXXXXXXXXXXXXXXXXXXXXXXXX//                  
-                //XXXXXXXXXXXX%%XX%%XXXXXXXX**              ''                                                                                    ''    ''  &&XXXXXXXXXXXXXXXXXXXXXXXX%%((                  
-                ''%%XXXXXXXXXXXXXXXXXXXXXX%%//              ''                                                                                    ''  ''    //XXXXXXXXXXXXXXXXXXXXXXXX&&                    
-      ''          **XXXXXXXX%%XXXXXX%%XXXX&&          ''    ''                                                                                      ''        &&XXXXXXXXXXXXXXXXXX%%XX**                    
-                  //XXXXXXXXXXXX%%XXXXXXXX((  ''                                                                                                            ''//XXXXXXXXXXXXXXXXXXXX%%((  ''                
-                  ''&&XXXXXXXX%%XXXXXXXX&&  ''                                                                                                                ''&&XX%%XXXX%%XXXXXXXX&&''                    
-                ''  ++XXXX%%XX%%XX%%XXXX//                                                                                                                      //XXXXXXXX%%XXXXXXXX//''                    
-                    ((%%XXXXXXXXXX%%XX&&  ''  ''                                                                                                                  &&XXXXXXXXXXXXXX&&''                      
-                      ++XXXX%%XXXXXXXX((                                                                                                          ''              //XXXXXXXXXXXXXX++                        
-                      ''%%XXXXXX%%XX**  ''  ''                                                                                                                      &&XXXX%%%%XX&&((        ''              
-                        ++XXXXXXXXXX((''  ''                                                                                                            ''''        //XXXX%%XXXX//          ''              
-                          %%XXXXXX&&                                                                                                            ''                ''  &&XXXXXX&&''          ''              
-                  ''  ''  //XXXXXX((        ''                                                                                                                  ''    //XXXXXX((                            
-                          ''**XX**''          ''                                                                                                                  ''  ''&&XX++                              
-                ''          ((&&//    ''                                                                                                                          ''    //&&''                              
-                        ''''  //++**++++**++**********************************************************************************************************************++****++((                                
-                    ''          ++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX//''                                
-                      ''    ''    **XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX++''  ''                              
-                      ''''  ''    ''**XX%%XXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%**    ''''                              
-                  ''          ''    ''&&XXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX**                                        
-                                  ''  ''&&XXXXXXXX%%XXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXXXXXXXX%%XXXX**''  ''    ''                              
-                                    ''  ''**XXXX%%XXXXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%**''  ''''    ''                              
-                                ''        ''++XXXXXXXXXX%%%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%%%%%XXXXXXXXXXXXXXXX++''    ''      ''                              
-                                  ''    ''    ++XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXXXXXXXXXX%%XXXX%%//    ''                                          
-                                  ''      ''    ((%%XX%%XXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%%%XXXXXX%%%%XXXXXX&&((  ''          ''    ''                            
-                                ''    ''            ++XXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%%%XXXX%%XX++                                                      
-                                  ''              ''  ((&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXXXXXXXXXXXX&&((  ''    ''  ''''                                        
-                                        ''            ''''//%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%XXXX&&//  ''      ''          ''                                    
-                                                      ''    ((//%%XXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&&//''                                                              
-                                                ''            ''  //&&XXXXXXXX%%XXXXXXXXXXXXXXXXXXXX%%XXXXXXXXXXXXXXXXXXXXXXXXXX%%%%&&//    ''                                                              
-                                                        ''      ''    ((++&&XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%%%XXXXXXXX%%&&++((          ''                                                            
-                                                                    ''      ((//**&&%%XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX%%&&**//((          ''                                                                  
-                                                    ''          ''            ''    ((((//++**&&&&&&&&&&******++((((''            ''''      ''                                                              
-                                                                                                                ''              ''    ''''                                                                  
-                                                        ''''          ''''''''''              ''                                  ''''        ''                                                            
-                                                      ''      ''    ''                                                                  ''''                                                                
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@4K5xvv*5*vvx5K&&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&Kv:``      `&`      ``:vK&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@Kv.           `4@&`           .*K@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@4*`              5@@@5              `*K@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@x.                *@@@@@*                .x@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@x`                 .@@@@@@@.                 `x@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@5`                   &@@@@@@@&`                  `x@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@4.                    5@@@@@@@@@5                    .4@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@x                     *@@@@@@@@@@@*                     v@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@:                     .@@@@@@@@@@@@@.                     :@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@&`                      &@@@@@@@@@@@@@&`                     `4@@@@@@@@@@@@@@
+@@@@@@@@@@@@4`                      5@@@@@@@@@@@@@@@5                      `4@@@@@@@@@@@@@
+@@@@@@@@@@@&`                      *@@@@@@@@@@@@@@@@@*                      `&@@@@@@@@@@@@
+@@@@@@@@@@&`                      .@@@@@@@@@@@@@@@@@@@.                      `&@@@@@@@@@@@
+@@@@@@@@@@:                      `4@@@@@@@@@@@@@@@@@@@&`                      :@@@@@@@@@@@
+@@@@@@@@@x                       5@@@@@@@@@@@@@@@@@@@@@5                       v@@@@@@@@@@
+@@@@@@@@&                       *@@@@@@@@@@@@@@@@@@@@@@@*                       &@@@@@@@@@
+@@@@@@@@;                      .@@@@@@@@@@@@@@@@@@@@@@@@@.                      :@@@@@@@@@
+@@@@@@@4                      `4@@@@@@@@@@@@@@@@@@@@@@@@@&`                      4@@@@@@@@
+@@@@@@@*                      5@@@@@@@@@@@@@@@@@@@@@@@@@@@5                      *@@@@@@@@
+@@@@@@@`                     *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*                     `@@@@@@@@
+@@@@@@K                     .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.                     K@@@@@@@
+@@@@@@v                    `4@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&`                    v@@@@@@@
+@@@@@@;                    5@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@5                    ;@@@@@@@
+@@@@@@.                   *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*                   .@@@@@@@
+@@@@@@.                  .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.                  `@@@@@@@
+@@@@@@`                 `4@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&`                 `@@@@@@@
+@@@@@@.                 5@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@5                 .@@@@@@@
+@@@@@@;                *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*                ;@@@@@@@
+@@@@@@v               .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.               v@@@@@@@
+@@@@@@K               &@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&`              K@@@@@@@
+@@@@@@@`             5@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@5             `@@@@@@@@
+@@@@@@@*            *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*            ;@@@@@@@@
+@@@@@@@4           .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.           4@@@@@@@@
+@@@@@@@@:          &@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&`         :@@@@@@@@@
+@@@@@@@@&         5@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@5         4@@@@@@@@@
+@@@@@@@@@v       *@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*       v@@@@@@@@@@
+@@@@@@@@@@:     .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.     :@@@@@@@@@@@
+@@@@@@@@@@&`    4@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&`   `&@@@@@@@@@@@
+@@@@@@@@@@@4`  5@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@5  `4@@@@@@@@@@@@
+@@@@@@@@@@@@4`*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*`4@@@@@@@@@@@@@
+@@@@@@@@@@@@@4v:;;:;:;:;:;:;:;;:;;:;;:;;;:;;;:;;:;;:;;:;;:;;:;;:;;:;;:;;::v4@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@&.                                                         :&@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@v                                                       v@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@4.                                                   .K@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@x`                                               `x@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@v`                                           `v@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@x`                                       `x@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@K;`                                 `;K@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@K*`                           .*K@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&5v:`                 `:*K&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@&4Kxvv**;***v554&@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

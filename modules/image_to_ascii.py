@@ -8,18 +8,14 @@ from modules.dithering import DitheringStrategy
 from modules.save.formats import DisplayFormats
 from modules.utils.custom_types import AsciiColors, AsciiImage
 from modules.utils.font import Font
-from modules.utils.utils import (
-    create_ascii_image,
-    create_char_array,
-    map_to_char_vectorized,
-    rescale_image,
-)
+from modules.utils.utils import (create_ascii_image, create_char_array,
+                                 map_to_char_vectorized, rescale_image)
 
 
 def process_image(
     image: Image.Image,
     char_arrays: list[npt.NDArray[np.str_]],
-    dithering_strategy: type[DitheringStrategy] | None = None,
+    dithering_strategy: DitheringStrategy | None = None,
 ) -> tuple[list[AsciiImage], AsciiColors, npt.NDArray[np.float64]]:
     img_array: npt.NDArray[np.uint8] = np.array(image, dtype=np.uint8)
 
@@ -44,12 +40,14 @@ def process_image(
 def ascii_convert(
     image: Image.Image,
     char_arrays: list[npt.NDArray[np.str_]],
-    dithering_strategy: type[DitheringStrategy] | None,
+    dithering_strategy: DitheringStrategy | None,
     display_formats: list[DisplayFormats],
 ) -> list[ImageSurface]:
     grids, image_colors, gray_array = process_image(
         image, char_arrays, dithering_strategy
     )
+    for row in grids[0]:
+        print("".join(row))
     return create_ascii_image(grids, image_colors, gray_array, display_formats)
 
 
@@ -82,4 +80,4 @@ def run(
         rescaled_image, char_arrays, dithering_strategy, display_formats
     )
     for ascii_image, display_format in zip(ascii_images, display_formats):
-        ascii_image.write_to_png(f"{image_name}_ascii_{display_format.value}.png")
+        ascii_image.write_to_png(f"{image_name}_ascii_{display_format.name}.png")
