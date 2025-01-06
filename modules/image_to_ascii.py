@@ -46,8 +46,6 @@ def ascii_convert(
     grids, image_colors, gray_array = process_image(
         image, char_arrays, dithering_strategy
     )
-    for row in grids[0]:
-        print("".join(row))
     return create_ascii_image(grids, image_colors, gray_array, display_formats)
 
 
