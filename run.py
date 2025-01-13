@@ -64,6 +64,11 @@ if __name__ == "__main__":
         help=f"{', '.join(display_formats.keys())}",
         default=argparse.SUPPRESS,
     )
+    parser.add_argument(
+        "--edges",
+        action="store_true",
+        help="Activate edge detection",
+    )
     args: argparse.Namespace = parser.parse_args()
 
     if "format" not in args:
@@ -108,6 +113,7 @@ if __name__ == "__main__":
             height=args.height,
             dithering_strategy=dithering,
             display_format=display_format,
+            edge_detection=args.edges,
         )
     elif args.format == "text":
         from modules.text_to_text import text_to_text
@@ -117,6 +123,7 @@ if __name__ == "__main__":
             height=args.height,
             dithering_strategy=dithering,
             display_format=display_format,
+            edge_detection=args.edges,
         )
     elif args.format == "image":
         from modules.image_to_ascii import run
@@ -126,4 +133,5 @@ if __name__ == "__main__":
             height=args.height,
             dithering_strategy=dithering,
             display_formats=[display_format],
+            edge_detection=args.edges,
         )

@@ -33,7 +33,8 @@ def text_to_text(
     height: int,
     dithering_strategy: DitheringStrategy | None,
     display_format: DisplayFormats,
+    edge_detection: bool = False,
 ) -> None:
     image_path = generate_image_text(text)
-    run(image_path, height, dithering_strategy, [display_format])
+    run(image_path, height, dithering_strategy, [display_format], edge_detection)
     os.remove(image_path)

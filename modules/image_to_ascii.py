@@ -8,14 +8,20 @@ from modules.dithering import DitheringStrategy
 from modules.save.formats import DisplayFormats
 from modules.utils.custom_types import AsciiColors, AsciiImage
 from modules.utils.font import Font
-from modules.utils.utils import (create_ascii_image, create_char_array,
-                                 map_to_char_vectorized, rescale_image)
+from modules.utils.utils import (
+    create_ascii_image,
+    create_char_array,
+    map_to_char_vectorized,
+    rescale_image,
+)
+from modules.edge_detection import EdgeDetection
 
 
 def process_image(
     image: Image.Image,
     char_arrays: list[npt.NDArray[np.str_]],
     dithering_strategy: DitheringStrategy | None = None,
+    edge_detection: bool = False,
 ) -> tuple[list[AsciiImage], AsciiColors, npt.NDArray[np.float64]]:
     img_array: npt.NDArray[np.uint8] = np.array(image, dtype=np.uint8)
 
@@ -24,11 +30,17 @@ def process_image(
         np.dot(img_array[..., :3], [0.3190, 0.5870, 0.1240]), 0.0, 255.0
     )
 
+    edge_detection_parameters: EdgeDetection = EdgeDetection()
+    if edge_detection:
+        edge_detection_parameters.apply_canny(img_array)
+        edge_detection_parameters.apply_sobel(gray_array)
+
     if dithering_strategy is not None:
         gray_array = dithering_strategy.dithering(gray_array, len(char_arrays[0]))
 
     ascii_chars: list[npt.NDArray[np.str_]] = [
-        map_to_char_vectorized(gray_array, char_array) for char_array in char_arrays
+        map_to_char_vectorized(gray_array, char_array, edge_detection_parameters)
+        for char_array in char_arrays
     ]
 
     grids: list[AsciiImage] = [ascii_char.tolist() for ascii_char in ascii_chars]
@@ -42,9 +54,10 @@ def ascii_convert(
     char_arrays: list[npt.NDArray[np.str_]],
     dithering_strategy: DitheringStrategy | None,
     display_formats: list[DisplayFormats],
+    edge_detection: bool = False,
 ) -> list[ImageSurface]:
     grids, image_colors, gray_array = process_image(
-        image, char_arrays, dithering_strategy
+        image, char_arrays, dithering_strategy, edge_detection
     )
     return create_ascii_image(grids, image_colors, gray_array, display_formats)
 
@@ -54,6 +67,7 @@ def run(
     height: int,
     dithering_strategy: DitheringStrategy | None,
     display_formats: list[DisplayFormats],
+    edge_detection: bool = False,
 ) -> None:
     image_name: str = image_path.split(".")[0]
     image: Image.Image = Image.open(image_path).convert("RGB")
@@ -75,7 +89,7 @@ def run(
     ]
 
     ascii_images: list[ImageSurface] = ascii_convert(
-        rescaled_image, char_arrays, dithering_strategy, display_formats
+        rescaled_image, char_arrays, dithering_strategy, display_formats, edge_detection
     )
     for ascii_image, display_format in zip(ascii_images, display_formats):
         ascii_image.write_to_png(f"{image_name}_ascii_{display_format.name}.png")

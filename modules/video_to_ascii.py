@@ -28,7 +28,7 @@ from modules.utils.ffmpeg import (
 from modules.utils.font import Font
 from modules.utils.utils import create_char_array
 
-batch_size: int = 100
+batch_size: int = 80
 
 
 class ProcessingParameters:
@@ -42,7 +42,8 @@ class ProcessingParameters:
         width: int,
         height: int,
         display_formats: list[DisplayFormats],
-        dithering_strategy: type[DitheringStrategy] | None,
+        dithering_strategy: DitheringStrategy | None,
+        edge_detection: bool = False,
     ) -> "ProcessingParameters":
         if not cls._instance:
             cls._instance = super(ProcessingParameters, cls).__new__(cls)
@@ -60,6 +61,7 @@ class ProcessingParameters:
             ]
             cls._instance._display_formats = display_formats
             cls._instance._dithering_strategy = dithering_strategy
+            cls._instance._edge_detection = edge_detection
 
         return cls._instance
 
@@ -84,14 +86,20 @@ class ProcessingParameters:
         self._display_formats = display_formats
 
     @property
-    def dithering_strategy(self) -> type[DitheringStrategy] | None:
+    def dithering_strategy(self) -> DitheringStrategy | None:
         return self._dithering_strategy
 
     @dithering_strategy.setter
-    def dithering_strategy(
-        self, dithering_strategy: type[DitheringStrategy] | None
-    ) -> None:
+    def dithering_strategy(self, dithering_strategy: DitheringStrategy | None) -> None:
         self._dithering_strategy = dithering_strategy
+
+    @property
+    def edge_detection(self) -> bool:
+        return self._edge_detection
+
+    @edge_detection.setter
+    def edge_detection(self, edge_detection: bool) -> None:
+        self._edge_detection = edge_detection
 
 
 def extract_frame(video_capture: VideoCapture) -> tuple[bool, MatLike]:
@@ -130,6 +138,7 @@ def process_frame(frame_data: FrameData) -> None:
         ProcessingParameters.get_instance().char_arrays,
         ProcessingParameters.get_instance().dithering_strategy,
         ProcessingParameters.get_instance().display_formats,
+        ProcessingParameters.get_instance().edge_detection,
     )
     ascii_image[0].write_to_png(f"./{video_name}/{frame_id:04d}.png")
 
@@ -176,6 +185,7 @@ def video_image_convert(
     height: int,
     dithering_strategy: DitheringStrategy | None,
     display_format: "DisplayFormats",
+    edge_detection: bool = False,
 ) -> None:
     if height % 2 == 1:
         height += 1
@@ -201,7 +211,11 @@ def video_image_convert(
     resize_video(video, downsize_width, downsize_height, downsize_video_path)
 
     ProcessingParameters(
-        downsize_width, downsize_height, [display_format], dithering_strategy
+        downsize_width,
+        downsize_height,
+        [display_format],
+        dithering_strategy,
+        edge_detection,
     )
 
     video_framerate: float = get_video_framerate(downsize_video_path)

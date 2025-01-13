@@ -8,10 +8,12 @@ from numba import jit
 from PIL import Image
 
 from modules.ascii_dict import AsciiDict
+from modules.ascii_dict.edges import AsciiDictEdges
 from modules.canvas_context.cairo_context import CairoContext, CairoContextFactory
 from modules.save.formats import DisplayFormats
 from modules.utils.custom_types import AsciiColors, AsciiImage
 from modules.utils.font import Font
+from modules.edge_detection import EdgeDetection
 
 _initialized: bool = False
 face: cairo.FontFace | None = None
@@ -19,6 +21,26 @@ face: cairo.FontFace | None = None
 
 def create_char_array(ascii_dict: AsciiDict) -> npt.NDArray[np.str_]:
     return np.array(list(ascii_dict.value))
+
+
+@jit(
+    "int32(float64)",
+    nopython=True,
+    nogil=True,
+    fastmath=True,
+    cache=True,
+)
+def map_angle_to_ascii(angle: float) -> int:
+    if -22.5 <= angle < 22.5 or 157.5 <= angle <= 180 or -180 <= angle < -157.5:
+        return 0
+    elif 67.5 <= angle < 112.5 or -112.5 <= angle < -67.5:
+        return 1
+    elif 22.5 <= angle < 67.5 or -157.5 <= angle < -112.5:
+        return 2
+    elif 112.5 <= angle < 157.5 or -67.5 <= angle < -22.5:
+        return 3
+    else:
+        return -1  # No edge
 
 
 @jit(
@@ -37,11 +59,51 @@ def _map_values_to_positions(
     return positions.astype(np.int32)
 
 
+@jit(
+    "int32[:, :](float64[:, :], float64[:, :])",
+    nopython=True,
+    nogil=True,
+    fastmath=True,
+    cache=True,
+)
+def _map_edges_to_positions(
+    angles: npt.NDArray[np.float64],
+    magnitudes: npt.NDArray[np.float64],
+) -> npt.NDArray[np.int32]:
+    positions: npt.NDArray[np.int32] = np.zeros_like(angles, dtype=np.int32)
+    for i in range(angles.shape[0]):
+        for j in range(angles.shape[1]):
+            if magnitudes[i, j] < 0.55:
+                positions[i, j] = -1
+            else:
+                positions[i, j] = map_angle_to_ascii(angles[i, j])
+    return positions
+
+
 def map_to_char_vectorized(
-    values: npt.NDArray[np.float64], char_array: npt.NDArray[np.str_]
+    values: npt.NDArray[np.float64],
+    char_array: npt.NDArray[np.str_],
+    edge_detection_parameters: EdgeDetection,
 ) -> npt.NDArray[np.str_]:
     positions: npt.NDArray[np.int32] = _map_values_to_positions(values, len(char_array))
-    return char_array[positions]
+    output: npt.NDArray[np.str_] = char_array[positions]
+
+    angles = edge_detection_parameters.angles
+    magnitudes = edge_detection_parameters.magnitudes
+    canny_array = edge_detection_parameters.canny_array
+
+    if angles is not None and magnitudes is not None:
+        edges_positions: npt.NDArray[np.int32] = _map_edges_to_positions(
+            angles, magnitudes
+        )
+        mask = edges_positions != -1
+    if canny_array is not None:
+        canny_array = canny_array.reshape(values.shape)
+        mask &= canny_array != 0
+    if angles is not None and magnitudes is not None:
+        output[mask] = AsciiDictEdges[edges_positions[mask]]
+
+    return output
 
 
 # https://www.cairographics.org/cookbook/freetypepython/
@@ -168,7 +230,7 @@ def create_ascii_image(
 
     for cairo_context in contexts:
         cairo_context.context.set_font_face(face)
-        cairo_context.context.set_font_size(14)
+        cairo_context.context.set_font_size(12)
         cairo_context.context.set_source_rgb(0, 0, 0)
         cairo_context.context.paint()
 
