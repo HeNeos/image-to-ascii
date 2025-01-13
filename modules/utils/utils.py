@@ -9,11 +9,12 @@ from PIL import Image
 
 from modules.ascii_dict import AsciiDict
 from modules.ascii_dict.edges import AsciiDictEdges
-from modules.canvas_context.cairo_context import CairoContext, CairoContextFactory
+from modules.canvas_context.cairo_context import (CairoContext,
+                                                  CairoContextFactory)
+from modules.edge_detection import EdgeDetection
 from modules.save.formats import DisplayFormats
 from modules.utils.custom_types import AsciiColors, AsciiImage
 from modules.utils.font import Font
-from modules.edge_detection import EdgeDetection
 
 _initialized: bool = False
 face: cairo.FontFace | None = None
@@ -230,7 +231,7 @@ def create_ascii_image(
 
     for cairo_context in contexts:
         cairo_context.context.set_font_face(face)
-        cairo_context.context.set_font_size(12)
+        cairo_context.context.set_font_size(14)
         cairo_context.context.set_source_rgb(0, 0, 0)
         cairo_context.context.paint()
 
