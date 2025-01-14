@@ -9,8 +9,7 @@ from PIL import Image
 
 from modules.ascii_dict import AsciiDict
 from modules.ascii_dict.edges import AsciiDictEdges
-from modules.canvas_context.cairo_context import (CairoContext,
-                                                  CairoContextFactory)
+from modules.canvas_context.cairo_context import CairoContext, CairoContextFactory
 from modules.edge_detection import EdgeDetection
 from modules.save.formats import DisplayFormats
 from modules.utils.custom_types import AsciiColors, AsciiImage
@@ -98,10 +97,9 @@ def map_to_char_vectorized(
             angles, magnitudes
         )
         mask = edges_positions != -1
-    if canny_array is not None:
-        canny_array = canny_array.reshape(values.shape)
-        mask &= canny_array != 0
-    if angles is not None and magnitudes is not None:
+        if canny_array is not None:
+            canny_array = canny_array.reshape(values.shape)
+            mask &= canny_array != 0
         output[mask] = AsciiDictEdges[edges_positions[mask]]
 
     return output
