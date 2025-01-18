@@ -53,7 +53,10 @@ def get_video_resolution(video_path: str) -> tuple[int, int]:
         video_path,
     ]
     ffprobe_result = subprocess.run(ffprobe_command, capture_output=True, text=True)
-    video_width, video_height = map(int, ffprobe_result.stdout.strip().split("x"))
+
+    video_width, video_height = map(
+        int, ffprobe_result.stdout.strip().split()[0].split("x")
+    )
     return video_width, video_height
 
 
