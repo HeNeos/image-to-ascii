@@ -1,5 +1,6 @@
 import typer
 from typing import Optional, cast
+from pathlib import Path
 
 from modules.dithering import DitheringStrategy
 from modules.dithering.utils import get_dithering_strategy
@@ -54,7 +55,12 @@ def convert(
         typer.echo("Missing filename for 'image' format.")
         raise typer.Exit(code=1)
     elif format == "video" and not filename:
-        filename = "0"  # Default to webcam
+        typer.echo("Missing filename for 'video' format.")
+        raise typer.Exit(code=1)
+        # filename = "0"  # Default to webcam
+
+    if filename is not None:
+        path_filename = Path(filename)
 
     dithering_strategy: Optional[DitheringStrategy] = get_dithering_strategy(
         dithering or ""
@@ -67,7 +73,7 @@ def convert(
         from modules.video_to_ascii import video_image_convert
 
         video_image_convert(
-            video=cast(str, filename),
+            video=path_filename,
             height=height,
             dithering_strategy=dithering_strategy,
             display_format=selected_display_format,
@@ -87,7 +93,7 @@ def convert(
         from modules.image_to_ascii import run
 
         run(
-            image_path=cast(str, filename),
+            image_path=path_filename,
             height=height,
             dithering_strategy=dithering_strategy,
             display_formats=[selected_display_format],

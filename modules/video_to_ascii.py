@@ -2,6 +2,7 @@ import os
 import shutil
 from multiprocessing import Pool, cpu_count
 from typing import Any
+from pathlib import Path
 
 import numpy as np
 import numpy.typing as npt
@@ -181,7 +182,7 @@ def process_frames(
 
 
 def video_image_convert(
-    video: str,
+    video: Path,
     height: int,
     dithering_strategy: DitheringStrategy | None,
     display_format: "DisplayFormats",
@@ -189,8 +190,9 @@ def video_image_convert(
 ) -> None:
     if height % 2 == 1:
         height += 1
-    video_name: str = video.split(".")[0]
-    video_width, video_height = get_video_resolution(video)
+    video_name: str = video.stem
+    video_absolute_path: str = str(video.resolve())
+    video_width, video_height = get_video_resolution(video_absolute_path)
     width = int(video_width * height / video_height)
     if width % 2 == 1:
         width += 1
@@ -208,7 +210,9 @@ def video_image_convert(
         downsize_width += 1
 
     downsize_video_path: str = f"{video_name}-downsize.mp4"
-    resize_video(video, downsize_width, downsize_height, downsize_video_path)
+    resize_video(
+        video_absolute_path, downsize_width, downsize_height, downsize_video_path
+    )
 
     ProcessingParameters(
         downsize_width,

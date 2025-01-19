@@ -2,6 +2,7 @@ import numpy as np
 import numpy.typing as npt
 from cairo import ImageSurface
 from PIL import Image
+from pathlib import Path
 
 from modules.ascii_dict import AsciiDict
 from modules.dithering import DitheringStrategy
@@ -63,13 +64,13 @@ def ascii_convert(
 
 
 def run(
-    image_path: str,
+    image_path: Path,
     height: int,
     dithering_strategy: DitheringStrategy | None,
     display_formats: list[DisplayFormats],
     edge_detection: bool = False,
 ) -> None:
-    image_name: str = image_path.split(".")[0]
+    image_name: str = image_path.stem
     image: Image.Image = Image.open(image_path).convert("RGB")
     rescaled_image: Image.Image = rescale_image(image, height)
     new_width, new_height = rescaled_image.size
