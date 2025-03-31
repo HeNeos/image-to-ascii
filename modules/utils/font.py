@@ -2,6 +2,8 @@ from enum import Enum
 
 
 class Font(Enum):
-    Width = 8
+    Size = 11
+    Width = 6
     Height = 12
-    Name = "consolas.ttf"
+    Name = "JetBrainsMonoNL-ExtraBold.ttf"
+    # Name = "consolas.ttf"

@@ -1,9 +1,10 @@
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
+from modules.utils.font import Font
 
 ascii_chars = [chr(i) for i in range(32, 127)]
 
-font_size = 14
+font_size = Font.Size.value
 font_path = "./consolas.ttf"
 canvas_size = font_size * 64
 canvas_width = int(canvas_size * 6 / 9)

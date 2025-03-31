@@ -229,7 +229,7 @@ def create_ascii_image(
 
     for cairo_context in contexts:
         cairo_context.context.set_font_face(face)
-        cairo_context.context.set_font_size(14)
+        cairo_context.context.set_font_size(Font.Size.value)
         cairo_context.context.set_source_rgb(0, 0, 0)
         cairo_context.context.paint()
 

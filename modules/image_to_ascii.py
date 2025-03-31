@@ -28,7 +28,7 @@ def process_image(
 
     # custom grayscale
     gray_array: npt.NDArray[np.float64] = np.clip(
-        np.dot(img_array[..., :3], [0.3190, 0.5870, 0.1240]), 0.0, 255.0
+        np.dot(img_array[..., :3], [0.3090, 0.5670, 0.1240]), 0.0, 255.0
     )
 
     edge_detection_parameters: EdgeDetection = EdgeDetection()
@@ -60,6 +60,12 @@ def ascii_convert(
     grids, image_colors, gray_array = process_image(
         image, char_arrays, dithering_strategy, edge_detection
     )
+
+    for i, display_format in enumerate(display_formats):
+        if display_format.value == DisplayFormats.BLACK_AND_WHITE.value:
+            for row in grids[i]:
+                print("".join(row))
+
     return create_ascii_image(grids, image_colors, gray_array, display_formats)
 
 
