@@ -9,5 +9,5 @@ class AsciiDictColor(Enum):
     )
     # HighAsciiDict = " !*i713noah6bdwmD08B@"
     # LowAsciiDict = " !*i1oawhb8B@"
-    HighAsciiDict = " :!si{35aVU9qOD#8$&@@"
-    LowAsciiDict = " !loa6O#8&@"
+    HighAsciiDict = " :!*si{35aVU9qOD#8$&@"
+    LowAsciiDict = " :!loa6O#&@"

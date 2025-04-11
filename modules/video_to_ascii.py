@@ -243,16 +243,4 @@ def video_image_convert(
     merge_frames(frames_filenames, video_framerate, video_path)
     output_path = f"{video_name}_ascii_temp.mp4"
     add_audio_to_video(video_path, audio_path, output_path)
-    output_video_width, output_video_height = get_video_resolution(output_path)
-
-    if output_video_height != height or output_video_width != width:
-        resize_video(
-            output_path,
-            width,
-            height,
-            f"{video_name}_ascii.mp4",
-            compression_level=22,
-        )
-        os.remove(output_path)
-    else:
-        os.rename(output_path, f"{video_name}_ascii.mp4")
+    os.rename(output_path, f"{video_name}_ascii.mp4")
