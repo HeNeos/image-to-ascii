@@ -6,9 +6,10 @@ from modules.dithering import DitheringStrategy
 from modules.image_to_ascii import run
 from modules.save.formats import DisplayFormats
 from modules.utils.font import Font
+from pathlib import Path
 
 
-def generate_image_text(text: str) -> str:
+def generate_image_text(text: str) -> Path:
     font = ImageFont.truetype(Font.Name.value, 256)
     text_box = font.getbbox(text)
     text_width: int = abs(text_box[2] - text_box[0])
@@ -25,7 +26,7 @@ def generate_image_text(text: str) -> str:
     image_name: str = f"assets/{text}.png"
     image.save(image_name)
 
-    return image_name
+    return Path(image_name)
 
 
 def text_to_text(
