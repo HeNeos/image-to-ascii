@@ -7,10 +7,16 @@ from pathlib import Path
 import numpy as np
 import numpy.typing as npt
 import progressbar
-from cairo import ImageSurface
-from cv2 import COLOR_BGR2RGB, VideoCapture, cvtColor
+from cairo import ImageSurface, FORMAT_ARGB32, FORMAT_RGB24
+from cv2 import (
+    COLOR_BGR2RGB,
+    VideoCapture,
+    cvtColor,
+    IMWRITE_JPEG_QUALITY,
+    COLOR_BGRA2BGR,
+    imwrite,
+)
 from cv2.typing import MatLike
-from PIL import Image
 
 from modules.ascii_dict import AsciiDict
 from modules.dithering import DitheringStrategy
@@ -68,7 +74,10 @@ class ProcessingParameters:
 
     @staticmethod
     def get_instance() -> "ProcessingParameters":
-        return ProcessingParameters(0, 0, [DisplayFormats], DitheringStrategy)
+        if not ProcessingParameters._instance:
+            print("Warning: ProcessingParameters accessed before initialization.")
+            return ProcessingParameters(100, 100, [DisplayFormats.COLOR], None, False)
+        return ProcessingParameters._instance
 
     @property
     def char_arrays(self) -> list[npt.NDArray[np.str_]]:
@@ -120,7 +129,7 @@ def extract_frames(
     for _ in range(batch_size):
         ret, frame = extract_frame(video_capture)
         if ret:
-            resized_frame: Image.Image = Image.fromarray(cvtColor(frame, COLOR_BGR2RGB))
+            resized_frame: npt.NDArray[np.uint8] = cvtColor(frame, COLOR_BGR2RGB)
             frames.append(
                 FrameData(frame=resized_frame, frame_id=frame_id, video_name=video_name)
             )
@@ -131,7 +140,7 @@ def extract_frames(
 
 
 def process_frame(frame_data: FrameData) -> None:
-    frame: Image.Image = frame_data.frame
+    frame: npt.NDArray[np.uint8] = frame_data.frame
     frame_id: int = frame_data.frame_id
     video_name: str = frame_data.video_name
     ascii_image: list[ImageSurface] = ascii_convert(
@@ -141,7 +150,30 @@ def process_frame(frame_data: FrameData) -> None:
         ProcessingParameters.get_instance().display_formats,
         ProcessingParameters.get_instance().edge_detection,
     )
-    ascii_image[0].write_to_png(f"./{video_name}/{frame_id:04d}.png")
+    buf = ascii_image[0].get_data()
+    surface_format = ascii_image[0].get_format()
+    if surface_format == FORMAT_ARGB32:
+        cairo_data_bgra: npt.NDArray[np.uint8] = np.ndarray(
+            shape=(ascii_image[0].get_height(), ascii_image[0].get_width(), 4),
+            dtype=np.uint8,
+            buffer=buf,
+            strides=(ascii_image[0].get_stride(), 4, 1),
+        )
+        image_bgr = cvtColor(cairo_data_bgra, COLOR_BGRA2BGR)
+    elif surface_format == FORMAT_RGB24:
+        cairo_data_bgrx: npt.NDArray[np.uint8] = np.ndarray(
+            shape=(ascii_image[0].get_height(), ascii_image[0].get_width(), 4),
+            dtype=np.uint8,
+            buffer=buf,
+            strides=(ascii_image[0].get_stride(), 4, 1),
+        )
+        image_bgr = cairo_data_bgrx[:, :, :3]
+    else:
+        print(
+            f"Error: Unsupported Cairo surface format {surface_format} for frame {frame_id}"
+        )
+        return
+    imwrite(f"./{video_name}/{frame_id:04d}.jpg", image_bgr, [IMWRITE_JPEG_QUALITY, 90])
 
 
 def process_frames(
@@ -171,7 +203,7 @@ def process_frames(
             pool = Pool(cpu_count())
             frames_filenames.extend(
                 [
-                    f"./{video_name}/{frame_data.frame_id:04d}.png"
+                    f"./{video_name}/{frame_data.frame_id:04d}.jpg"
                     for frame_data in frames
                 ]
             )

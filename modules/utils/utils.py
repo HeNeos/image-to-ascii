@@ -1,3 +1,4 @@
+import cv2
 import ctypes as ct
 from typing import List, no_type_check
 
@@ -5,7 +6,6 @@ import cairo
 import numpy as np
 import numpy.typing as npt
 from numba import jit
-from PIL import Image
 
 from modules.ascii_dict import AsciiDict
 from modules.ascii_dict.edges import AsciiDictEdges
@@ -251,12 +251,16 @@ def create_ascii_image(
     return surfaces
 
 
-def rescale_image(image: Image.Image, new_height: int) -> Image.Image:
-    width, height = image.size
+def rescale_image(
+    image: npt.NDArray[np.uint8], new_height: int
+) -> npt.NDArray[np.uint8]:
+    height, width = image.shape[:2]
     resized_height: int = new_height // Font.Height.value
     scale: float = resized_height / height
     resized_width: int = int(width * (Font.Height.value / Font.Width.value) * scale)
-    resized_image = image.resize((resized_width, resized_height))
+    resized_image: npt.NDArray[np.uint8] = cv2.resize(
+        image, (resized_width, resized_height), interpolation=cv2.INTER_AREA
+    )
     return resized_image
 
 

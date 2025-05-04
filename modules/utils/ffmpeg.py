@@ -190,7 +190,7 @@ def merge_frames(
         "-crf",
         f"{crf}",
         "-preset",
-        "slow",
+        "faster",
         output_path,
     ]
     subprocess.run(command, check=True)
