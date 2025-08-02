@@ -34,8 +34,9 @@ from modules.utils.ffmpeg import (
 )
 from modules.utils.font import Font
 from modules.utils.utils import create_char_array
+from modules.post_processing.utils import apply_post_processing
 
-batch_size: int = 80
+batch_size: int = 16
 
 
 class ProcessingParameters:
@@ -51,6 +52,7 @@ class ProcessingParameters:
         display_formats: list[DisplayFormats],
         dithering_strategy: DitheringStrategy | None,
         edge_detection: bool = False,
+        post_processing: bool = True,
     ) -> "ProcessingParameters":
         if not cls._instance:
             cls._instance = super(ProcessingParameters, cls).__new__(cls)
@@ -69,6 +71,7 @@ class ProcessingParameters:
             cls._instance._display_formats = display_formats
             cls._instance._dithering_strategy = dithering_strategy
             cls._instance._edge_detection = edge_detection
+            cls._instance._post_processing = post_processing
 
         return cls._instance
 
@@ -111,6 +114,14 @@ class ProcessingParameters:
     def edge_detection(self, edge_detection: bool) -> None:
         self._edge_detection = edge_detection
 
+    @property
+    def post_processing(self) -> bool:
+        return self._post_processing
+
+    @post_processing.setter
+    def post_processing(self, post_processing: bool) -> None:
+        self._post_processing = post_processing
+
 
 def extract_frame(video_capture: VideoCapture) -> tuple[bool, MatLike]:
     ret, frame = video_capture.read()
@@ -121,7 +132,7 @@ def extract_frames(
     video_capture: VideoCapture,
     video_name: str,
     latest_frame_id: int,
-    batch_size: int = 50,
+    batch_size: int = 16,
 ) -> tuple[Frames, bool]:
     frame_id: int = latest_frame_id + 1
     frames: Frames = []
@@ -173,6 +184,8 @@ def process_frame(frame_data: FrameData) -> None:
             f"Error: Unsupported Cairo surface format {surface_format} for frame {frame_id}"
         )
         return
+    if ProcessingParameters.get_instance().post_processing:
+        image_bgr = apply_post_processing(image_bgr)
     imwrite(f"./{video_name}/{frame_id:04d}.jpg", image_bgr, [IMWRITE_JPEG_QUALITY, 90])
 
 
@@ -219,6 +232,7 @@ def video_image_convert(
     dithering_strategy: DitheringStrategy | None,
     display_format: "DisplayFormats",
     edge_detection: bool = False,
+    post_processing: bool = True,
 ) -> None:
     if height % 2 == 1:
         height += 1
@@ -252,6 +266,7 @@ def video_image_convert(
         [display_format],
         dithering_strategy,
         edge_detection,
+        post_processing,
     )
 
     video_framerate: float = get_video_framerate(downsize_video_path)

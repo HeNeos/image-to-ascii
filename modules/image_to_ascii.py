@@ -16,6 +16,7 @@ from modules.utils.utils import (
     rescale_image,
 )
 from modules.edge_detection import EdgeDetection
+from modules.post_processing.utils import apply_post_processing
 
 
 def process_image(
@@ -74,6 +75,7 @@ def run(
     dithering_strategy: DitheringStrategy | None,
     display_formats: list[DisplayFormats],
     edge_detection: bool = False,
+    post_processing: bool = True,
 ) -> None:
     image_name: str = image_path.stem
     image = cv2.cvtColor(cv2.imread(str(image_path)), cv2.COLOR_BGR2RGB)
@@ -118,7 +120,11 @@ def run(
         else:
             print(f"Error: Unsupported Cairo surface format {surface_format}")
             return
-        cv2.imwrite(
+
+        if post_processing:
+            image_bgr = apply_post_processing(image_bgr)
+
+        _: bool = cv2.imwrite(
             f"{image_name}_ascii_{display_format.name}.jpg",
             image_bgr,
             [cv2.IMWRITE_JPEG_QUALITY, 90],
